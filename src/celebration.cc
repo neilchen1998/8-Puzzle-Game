@@ -1,18 +1,15 @@
 #include "gui/celebrationlib.hpp"
 
+#include <algorithm>    // std::generate
+
 Celebration::Celebration()
+    : confetti_(MAX_NUM_CONFETTI)
 {
-    // Resize the confetti vector
-    confetti_.resize(MAX_NUM_CONFETTI);
-
     // Set all confetti to not active
-    auto itr = confetti_.begin();
-    while (itr != confetti_.end())
+    std::generate(confetti_.begin(), confetti_.end(), [this]()
     {
-        itr->active = false;
-
-        ++itr;
-    }
+        return GenerateConfetti();
+    });
 }
 
 void Celebration::Update()
@@ -22,7 +19,7 @@ void Celebration::Update()
     {
         SpawnConfetti();
     }
-    
+
     // Get the delta time
     float deltaT = GetFrameTime();
 
@@ -61,10 +58,25 @@ void Celebration::Draw() const
             Rectangle rec = { itr->position.x, itr->position.y, itr->size.x, itr->size.y };
             Vector2 origin = { (itr->position.x / 2), (itr->position.y / 2) };
 
-            DrawRectanglePro(rec, origin, itr->orientation, itr->color);
+            DrawRectanglePro(rec, origin, itr->orientation, itr->colour);
         }
         ++itr;
     }
+}
+
+Celebration::Confetti Celebration::GenerateConfetti()
+{
+    return Confetti
+    {
+        // Use designated initializer
+        .position = { (float)GetRandomValue(0, GetScreenWidth()), (float)GetRandomValue(-GetScreenHeight() * 0.25, 0) },
+        .velocity = { GetNormalFloatDist(0, 100), GetNormalFloatDist(0, 100) },
+        .size = (float)GetRandomValue(5, 12), (float)GetRandomValue(8, 20),
+        .orientation = (float)GetRandomValue(0, 360),
+        .omega = GetNormalFloatDist(-150, 150),
+        .colour = CONFETTI_COLOURS[GetUniformIntDist(0, CONFETTI_COLOURS.size() - 1)],
+        .active = true
+    };
 }
 
 void Celebration::SpawnConfetti()
@@ -74,13 +86,7 @@ void Celebration::SpawnConfetti()
     {
         if (!itr->active)
         {
-            itr->active = true;
-            itr->position = (Vector2){ (float)GetRandomValue(0, GetScreenWidth()), (float)GetRandomValue(-GetScreenHeight() * 0.25, 0) };
-            itr->velocity = (Vector2){ (float)GetNormalFloatDist(-100, 100), (float)GetNormalFloatDist(-100, 100) };
-            itr->size = (Vector2){ (float)GetRandomValue(5, 12), (float)GetRandomValue(8, 20) };
-            itr->orientation = (float)GetRandomValue(0, 360);
-            itr->omega = (float)GetNormalFloatDist(-150, 150);
-            itr->color = CONFETTI_COLOURS[GetUniformIntDist(0, CONFETTI_COLOURS.size() - 1)];
+            *itr = GenerateConfetti();
             break;
         }
 
