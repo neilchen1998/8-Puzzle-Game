@@ -36,7 +36,7 @@ endif()
 include(FetchContent)
 
 # all required packages
-# Try to find the fmt library that is at least newer than 11.2.0 on the machine
+# Try to find the fmt library that is at least newer than 11.0.0 on the machine
 find_package(fmt CONFIG 11.0.0 QUIET)
 if (NOT fmt_FOUND)
     message(STATUS "fmt could not be found or version is too old, downloading via FetchContent...")

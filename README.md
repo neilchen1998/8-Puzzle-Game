@@ -94,6 +94,48 @@ Vector v {.y = 14, .name = "b"};
 
 The value of *x* will be 0 (since no value is provided, 0 is the default value), *y* will be 14, and *name* will be *b*.
 
+### Check if Content is Available
+
+When using *FetchContent*, CMake will download the content even if it is install on the machine already.
+In order to prevent this but also make sure the machine has the minimium version, we use:
+
+``` cmake
+find_package(raylib CONFIG 5.5 QUIET)
+```
+
+or
+
+``` cmake
+find_package(Catch2 CONFIG 3.8...<4.0 QUIET)    # newer than 3.8 but older than 4.0
+```
+
+to make sure the content is available.
+
+This is the full example of how we use it:
+
+```cmake
+find_package(fmt CONFIG 11.0.0 QUIET)
+if (NOT fmt_FOUND)
+    message(STATUS "fmt could not be found or version is too old, downloading via FetchContent...")
+    FetchContent_Declare(
+    fmt
+    GIT_REPOSITORY https://github.com/fmtlib/fmt.git
+    GIT_TAG        11.2.0)
+    FetchContent_MakeAvailable(fmt)
+endif()
+```
+
+### Disable Build Example
+
+Some content come with its own app or example, this might cause name conflict.
+In order to prevent this, we use this to prevent the compiler from building the app or example.
+
+``` cmake
+set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+```
+
+Note, this needs to come before *FetchContent_Declare*, otherwise it will fail to stop the compiler from building the examples.
+
 ## Reference
 
 - [raylib](https://www.raylib.com/)
