@@ -5,7 +5,7 @@
 #include <array>   // std::array
 
 #include "raylib.h"
-#include "math/mathlib.hpp"
+#include "slidr/math/mathlib.hpp"
 #include "gui/colourlib.hpp"
 
 class Celebration

@@ -11,7 +11,7 @@ FetchContent_MakeAvailable(raylib)
 FetchContent_Declare(
   slidr
   GIT_REPOSITORY https://github.com/neilchen1998/slidr
-  GIT_TAG        main)
+  GIT_TAG        v2.1.2)
 FetchContent_MakeAvailable(slidr)
 set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 

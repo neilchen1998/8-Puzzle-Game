@@ -6,8 +6,8 @@
 #include "nanobench.h"  // ankerl::nanobench::Bench
 
 #include "raylib.h"
-#include "math/mathlib.hpp"
 #include "gui/colourlib.hpp"
+#include "slidr/math/mathlib.hpp"
 
 #include "raylib.h"
 
@@ -57,7 +57,7 @@ public:
             itr->velocity = (Vector2){ GetNormalFloatDist(0, 100), GetNormalFloatDist(0, 100) };
             itr->size = (Vector2){ (float)GetRandomValue(5, 12), (float)GetRandomValue(8, 20) };
             itr->orientation = (float)GetRandomValue(0, 360);
-            itr->omega = (float)GetNormalFloatDist(-150, 150);
+            itr->omega = GetNormalFloatDist(-150, 150);
             itr->colour =  CONFETTI_COLOURS[GetUniformIntDist(0, CONFETTI_COLOURS.size() - 1)];
 
             ++itr;

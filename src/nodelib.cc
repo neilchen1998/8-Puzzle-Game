@@ -6,7 +6,7 @@
 #include <initializer_list>  // std::reduce
 #include <fmt/core.h>   // fmt::print
 
-#include "math/mathlib.hpp" // hash_range
+#include "slidr/math/mathlib.hpp" // hash_range
 #include "node/nodelib.hpp" // Node
 #include "constants/constantslib.hpp"   // constants::RIGHT, constants::LEFT, etc.
 
