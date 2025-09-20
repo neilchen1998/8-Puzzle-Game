@@ -4,12 +4,12 @@
 #include <vector>   // std::vector
 
 #include "raylib.h"     // LoadTexture, Vector2, Rectangle
+#include "slidr/solver/solverlib.hpp"
 #include "fmt/core.h"   // fmt::format
 
 #include "gui/boardlib.hpp"
 #include "gui/colourlib.hpp"
 #include "gui/buttonlib.hpp"
-#include "slidr/solver/solverlib.hpp"
 #include "creator/creatorlib.hpp"
 
 // local constants

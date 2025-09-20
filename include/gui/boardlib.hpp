@@ -1,13 +1,12 @@
 #ifndef INCLUDE_GUI_BOARDLIB_H_
 #define INCLUDE_GUI_BOARDLIB_H_
 
-#include <memory>    // std::unique_ptr
+#include <memory>    // std::shared_ptr
 #include <stack>    // std::stack
 
 #include "raylib.h"
-
-#include "constants/constantslib.hpp"   // constants::EMPTY
-#include "node/nodelib.hpp" // Node, GetState()
+#include "slidr/constants/constantslib.hpp"   // constants::EMPTY
+#include "slidr/node/nodelib.hpp" // Node, GetState()
 
 namespace bd
 {

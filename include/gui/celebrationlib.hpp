@@ -4,9 +4,8 @@
 #include <vector>   // std::vector
 #include <array>   // std::array
 
-#include "raylib.h"
-#include "slidr/math/mathlib.hpp"
-#include "gui/colourlib.hpp"
+#include "raylib.h" // Vector2
+#include "gui/colourlib.hpp"    // LIGHT_CORAL, APRICOT, LEMON, etc.
 
 class Celebration
 {

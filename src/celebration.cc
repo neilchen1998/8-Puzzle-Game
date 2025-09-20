@@ -2,6 +2,8 @@
 
 #include <algorithm>    // std::generate
 
+#include "slidr/math/mathlib.hpp"   // GetNormalFloatDist, GetUniformIntDist
+
 Celebration::Celebration()
     : confetti_(MAX_NUM_CONFETTI)
 {

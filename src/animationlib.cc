@@ -1,7 +1,23 @@
-#include "raylib.h"
-#include "fmt/core.h"
+#include "raylib.h" // GetScreenHeight
 
 #include "gui/animationlib.hpp"
+
+RaylibAnimation::RaylibAnimation()
+    : curState_(LoadingState::SMALL_BOX_BLINKING),
+    screenWidth_(GetScreenHeight()),
+    screenHeight_(GetScreenHeight()),
+    logoPositionX_(screenWidth_/2 - 128),
+    logoPositionY_(screenHeight_/2 - 128),
+    leftSideRecHeight_(16),
+    topSideRecWidth_(16),
+    bottomSideRecWidth_(16),
+    rightSideRecHeight_(16),
+    lettersCount_(0),
+    framesCounter_(0),
+    alpha_(1.0f),
+    author_("Neil")
+{
+}
 
 void RaylibAnimation::Update()
 {
