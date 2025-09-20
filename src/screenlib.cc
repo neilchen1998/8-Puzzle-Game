@@ -27,8 +27,8 @@ ScreenManager::ScreenManager()
 
     float buttonWidth = std::max(restartTxtWidth_, newGameTxtWidth_) + 20;
 
-    restartBox_ = { screenWidth_ / 2 - buttonWidth - 20, static_cast<float>(screenHeight_ / 2 + 40), buttonWidth, 80};
-    newGameBox_ = { static_cast<float>(screenWidth_ / 2 + 20), restartBox_.y, buttonWidth, 80};
+    restartBox_ = { screenWidth_ / 2 - buttonWidth - 20, static_cast<float>(screenHeight_ / 2 + 40), buttonWidth, buttonWidth * 2};
+    newGameBox_ = { static_cast<float>(screenWidth_ / 2 + 20), restartBox_.y, buttonWidth, buttonWidth * 2};
 }
 
 void ScreenManager::Update()
@@ -60,7 +60,8 @@ void ScreenManager::Update()
         {
             boardPtr_->Update();
 
-            if (boardPtr_->IsFinished())
+            // if (boardPtr_->IsFinished())
+            if (true)
             {
                 curState_ = GameScreenState::CELEBRATION;
             }

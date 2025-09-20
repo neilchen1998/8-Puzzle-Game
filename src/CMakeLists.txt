@@ -1,19 +1,23 @@
 # raylib
-FetchContent_Declare(
-  raylib
-  GIT_REPOSITORY https://github.com/raysan5/raylib
-  GIT_TAG        5.5)
-set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
-set(BUILD_GAMES OFF CACHE BOOL "" FORCE)
-FetchContent_MakeAvailable(raylib)
+find_package(raylib CONFIG 5.5 QUIET)
+if (NOT raylib_FOUND)
+    message(STATUS "raylib could not be found or version is too old, downloading via FetchContent...")
+    set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+    set(BUILD_GAMES OFF CACHE BOOL "" FORCE)
+    FetchContent_Declare(
+      raylib
+      GIT_REPOSITORY https://github.com/raysan5/raylib
+      GIT_TAG        5.5)
+    FetchContent_MakeAvailable(raylib)
+endif()
 
 # slidr
+set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 FetchContent_Declare(
   slidr
   GIT_REPOSITORY https://github.com/neilchen1998/slidr
   GIT_TAG        v2.1.2)
 FetchContent_MakeAvailable(slidr)
-set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 
 file(GLOB GUI_HEADER_LIST CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/include/gui/*.hpp")
 
