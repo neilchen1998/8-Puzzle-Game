@@ -52,10 +52,10 @@ private:
     std::unique_ptr<Celebration> celebrationPtr_;
 
     /// @brief The state of the restart button
-    bd::ButtonState restartBtnState_;
+    gui::ButtonState restartBtnState_;
 
     /// @brief The state of the new game button
-    bd::ButtonState newGameBtnState_;
+    gui::ButtonState newGameBtnState_;
 
     /// @brief The restart button box
     Rectangle restartBox_;
