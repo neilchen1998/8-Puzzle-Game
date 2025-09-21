@@ -40,8 +40,7 @@ void ScreenManager::Update()
             raylibAnimationPtr_->Update();
 
             // Wait for the intro before jumping to TITLE screen
-            // if (raylibAnimationPtr_->IsDone())
-            if (true)
+            if (raylibAnimationPtr_->IsDone())
             {
                 curState_ = GameScreenState::TITLE;
             }
@@ -60,8 +59,7 @@ void ScreenManager::Update()
         {
             boardPtr_->Update();
 
-            // if (boardPtr_->IsFinished())
-            if (true)
+            if (boardPtr_->IsFinished())
             {
                 curState_ = GameScreenState::CELEBRATION;
             }
