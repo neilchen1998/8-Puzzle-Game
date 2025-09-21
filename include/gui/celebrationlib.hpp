@@ -12,13 +12,19 @@ class Celebration
 public:
     Celebration();
 
-    ~Celebration() = default;
+    ~Celebration();
 
     /// @brief Updates the confetti
     void Update();
 
     /// @brief Draws the confetti
     void Draw() const;
+
+    /// @brief Plays applause sound
+    void PlayApplauseSound();
+
+    /// @brief Stops playing applause sound
+    void StopApplauseSound();
 
 private:
     struct Confetti
@@ -55,6 +61,9 @@ private:
 private:
     /// @brief the confetti container
     std::vector<Confetti> confetti_;
+
+    /// @brief The applause sound effect
+    Sound applause_;
 
     /// @brief The gravity
     static constexpr float GRAVITY = 200.0;

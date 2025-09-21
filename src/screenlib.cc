@@ -81,12 +81,15 @@ void ScreenManager::Update()
         }
         case GameScreenState::CELEBRATION:
         {
+            celebrationPtr_->PlayApplauseSound();
             celebrationPtr_->Update();
 
             // Press enter or left click to change to GAMEPLAY screen
             if (IsKeyPressed(KEY_ENTER) || IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
             {
                 curState_ = GameScreenState::ENDING;
+
+                celebrationPtr_->StopApplauseSound();
             }
             break;
         }
