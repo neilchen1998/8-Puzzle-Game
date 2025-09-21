@@ -398,11 +398,11 @@ void Board::Reset()
 
     std::vector<int> initalLayout = creator::GetRandomLayout();
     std::shared_ptr<Node> startNode = std::make_shared<Node>(initalLayout);
-    
+
     std::stack<std::shared_ptr<Node>> newHistory;
     newHistory.push(startNode);
     std::swap(history_, newHistory);
-    
+
     slidr::Solver s {*history_.top()};
 
     s.SolvePuzzle();

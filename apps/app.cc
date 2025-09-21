@@ -3,7 +3,7 @@
 #include <chrono>   // std::chrono::high_resolution_clock, std::chrono::duration_cast
 #include <fmt/core.h>   // fmt::print
 
-#include "raylib.h" // InitWindow, SetTargetFPS, 
+#include "raylib.h" // InitWindow, SetTargetFPS,
 #include "fmt/core.h"
 
 #include "gui/screenlib.hpp"    // ScreenManager

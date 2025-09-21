@@ -49,7 +49,7 @@ void RaylibAnimation::Update()
         {
             bottomSideRecWidth_ += 4;
             rightSideRecHeight_ += 4;
-            
+
             // Check the bottom right box has completed
             if (bottomSideRecWidth_ == 256)
             {
@@ -83,7 +83,7 @@ void RaylibAnimation::Update()
         }
         case LoadingState::ENDING:
         {
-            curState_ = LoadingState::ENDING;      
+            curState_ = LoadingState::ENDING;
             break;
         }
         default: break;
