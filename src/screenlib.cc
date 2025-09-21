@@ -110,11 +110,11 @@ void ScreenManager::Update()
             {
                 if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
                 {
-                    restartBtnState_ = bd::ButtonState::Selected;
+                    restartBtnState_ = gui::ButtonState::Selected;
                 }
                 else
                 {
-                    restartBtnState_ = bd::ButtonState::Hovered;
+                    restartBtnState_ = gui::ButtonState::Hovered;
                 }
 
                 if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT))
@@ -124,18 +124,18 @@ void ScreenManager::Update()
             }
             else
             {
-                restartBtnState_ = bd::ButtonState::Unselected;
+                restartBtnState_ = gui::ButtonState::Unselected;
             }
 
             if (CheckCollisionPointRec(mousePoint, newGameBox_))
             {
                 if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
                 {
-                    newGameBtnState_ = bd::ButtonState::Selected;
+                    newGameBtnState_ = gui::ButtonState::Selected;
                 }
                 else
                 {
-                    newGameBtnState_ = bd::ButtonState::Hovered;
+                    newGameBtnState_ = gui::ButtonState::Hovered;
                 }
 
                 if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT))
@@ -145,7 +145,7 @@ void ScreenManager::Update()
             }
             else
             {
-                newGameBtnState_ = bd::ButtonState::Unselected;
+                newGameBtnState_ = gui::ButtonState::Unselected;
             }
 
             // Check if the undo button needs to take action
@@ -238,11 +238,11 @@ void ScreenManager::Draw() const
             DrawText("PRESS ENTER to RETURN to TITLE SCREEN", (GetScreenWidth() - subTxtWidth) / 2, 220, 20, DARKBLUE);
 
             // The restart button
-            DrawRectangleRounded(restartBox_, gui::cornerRadius, gui::segments, (restartBtnState_ == bd::ButtonState::Selected) ? CRIMSON : (restartBtnState_ == bd::ButtonState::Hovered) ? FIREBRICK : MAROON);
+            DrawRectangleRounded(restartBox_, gui::cornerRadius, gui::segments, (restartBtnState_ == gui::ButtonState::Selected) ? CRIMSON : (restartBtnState_ == gui::ButtonState::Hovered) ? FIREBRICK : MAROON);
             DrawText(restartTxt.data(), restartBox_.x + (restartBox_.width - restartTxtWidth_) / 2, restartBox_.y + (restartBox_.height - buttonFontSize) / 2, buttonFontSize, WHITE);
 
             // The new game button
-            DrawRectangleRounded(newGameBox_, gui::cornerRadius, gui::segments, (newGameBtnState_ == bd::ButtonState::Selected) ? DEEP_SKY_BLUE : (newGameBtnState_ == bd::ButtonState::Hovered) ? STEEL_BLUE : CAROLINE_BLUE);
+            DrawRectangleRounded(newGameBox_, gui::cornerRadius, gui::segments, (newGameBtnState_ == gui::ButtonState::Selected) ? DEEP_SKY_BLUE : (newGameBtnState_ == gui::ButtonState::Hovered) ? STEEL_BLUE : CAROLINE_BLUE);
             DrawText(newGameTxt.data(), newGameBox_.x + (newGameBox_.width - newGameTxtWidth_) / 2, newGameBox_.y + (newGameBox_.height - buttonFontSize) / 2, buttonFontSize, WHITE);
 
             break;

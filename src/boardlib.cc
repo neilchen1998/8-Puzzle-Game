@@ -4,7 +4,7 @@
 #include <vector>   // std::vector
 
 #include "raylib.h"     // LoadTexture, Vector2, Rectangle
-#include "slidr/solver/solverlib.hpp"
+#include "slidr/solver/solverlib.hpp"   // slidr::Solver
 #include "fmt/core.h"   // fmt::format
 
 #include "gui/boardlib.hpp"
@@ -12,35 +12,23 @@
 #include "gui/buttonlib.hpp"
 #include "creator/creatorlib.hpp"
 
-// local constants
-namespace
-{
-    constexpr int counterWidth = 250;
-    constexpr int counterHeight = 60;
-    constexpr int instructionFontSize = 20;
-    constexpr int moveCounterFontSize = 25;
-    constexpr int boardWidth = 500;
-    constexpr int boardHeight = 500;
-    constexpr int borderThickness = 10;
-}
-
 Board::Board()
     : screenWidth_(GetScreenWidth()),
     screenHeight_(GetScreenHeight()),
     numbers_(LoadTexture("resources/numbers.png")),
-    boardWidth__(boardWidth),
-    boardHeight_(boardHeight),
-    borderThickness_(borderThickness),
+    boardWidth__(gui::boardWidth),
+    boardHeight_(gui::boardHeight),
+    borderThickness_(gui::borderThickness),
     boxX_((screenWidth_ - boardWidth__) / 2),
     boxY_((screenHeight_ - boardHeight_) / 2),
     buttonWidth_(200),
     buttonHeight_(80),
-    undoBtnX_((screenHeight_ + boardHeight_) / 2 + borderThickness),
+    undoBtnX_((screenHeight_ + boardHeight_) / 2 + borderThickness_),
     undoBtnY_((screenHeight_ - boardHeight_) / 2),
-    restartBtnX_((screenHeight_ + boardHeight_) / 2 + borderThickness),
-    restartBtnY_(undoBtnY_ + buttonHeight_ + borderThickness),
-    helpBtnX_((screenHeight_ + boardHeight_) / 2 + borderThickness),
-    helpBtnY_(restartBtnY_ + buttonHeight_ + borderThickness),
+    restartBtnX_((screenHeight_ + boardHeight_) / 2 + borderThickness_),
+    restartBtnY_(undoBtnY_ + buttonHeight_ + borderThickness_),
+    helpBtnX_((screenHeight_ + boardHeight_) / 2 + borderThickness_),
+    helpBtnY_(restartBtnY_ + buttonHeight_ + borderThickness_),
     N_(constants::EIGHT_PUZZLE_SIZE),
     cellWidth_(boardWidth__ / N_),
     cellHeight_(boardHeight_ / N_),
@@ -48,14 +36,14 @@ Board::Board()
     h(numbers_.height / 2.0f),
     offsetW_(cellWidth_ / 5),
     offsetH_(cellHeight_ / 8),
-    restartBtnState_(bd::ButtonState::Unselected),
-    undoBtnState_(bd::ButtonState::Unselected),
-    helpBtnState_(bd::ButtonState::Unselected),
+    restartBtnState_(gui::ButtonState::Unselected),
+    undoBtnState_(gui::ButtonState::Unselected),
+    helpBtnState_(gui::ButtonState::Unselected),
     isSolved_(false),
     requestedHelp_(false),
     moves_(INT_MAX)
 {
-    buttonPositions_.resize(std::to_underlying(bd::Button::ButtonN));
+    buttonPositions_.resize(std::to_underlying(gui::Button::ButtonN));
 
     // Calculate the position of each piece of the puzzle
     for (size_t i = 0; i < constants::EIGHT_PUZZLE_NUM; i++)
@@ -65,9 +53,9 @@ Board::Board()
         buttonPositions_[i] = Rectangle {posX, posY, cellWidth_, cellHeight_};
     }
 
-    buttonPositions_[std::to_underlying(bd::Button::Undo)] = Rectangle {undoBtnX_, undoBtnY_, buttonWidth_, buttonHeight_};
-    buttonPositions_[std::to_underlying(bd::Button::Restart)] = Rectangle {restartBtnX_, restartBtnY_, buttonWidth_, buttonHeight_};
-    buttonPositions_[std::to_underlying(bd::Button::Help)] = Rectangle {helpBtnX_, helpBtnY_, buttonWidth_, buttonHeight_};
+    buttonPositions_[std::to_underlying(gui::Button::Undo)] = Rectangle {undoBtnX_, undoBtnY_, buttonWidth_, buttonHeight_};
+    buttonPositions_[std::to_underlying(gui::Button::Restart)] = Rectangle {restartBtnX_, restartBtnY_, buttonWidth_, buttonHeight_};
+    buttonPositions_[std::to_underlying(gui::Button::Help)] = Rectangle {helpBtnX_, helpBtnY_, buttonWidth_, buttonHeight_};
 
     std::vector<int> initalLayout = creator::GetRandomLayout();
     std::shared_ptr<Node> startNode = std::make_shared<Node>(initalLayout);
@@ -83,33 +71,36 @@ Board::Board()
     itr_ = solutionDir_.cbegin();
 
     optimalMoves_ = (solutionDir_.size() - 1);
+
+    fxButton_ = LoadSound("resources/buttonfx.wav");
 }
 
 Board::~Board()
 {
-    // Unload texture to prevent memory leaks
+    // Unload resources to prevent memory leaks
     UnloadTexture(numbers_);
+    UnloadSound(fxButton_);
 }
 
 void Board::Update()
 {
     const Vector2 mousePoint = GetMousePosition();
-    bd::Button btn = CheckWhichButtonIsPressed(mousePoint);
+    gui::Button btn = CheckWhichButtonIsPressed(mousePoint);
 
     restartBtnAction_ = false;
     undoBtnAction_ = false;
     helpBtnAction_ = false;
 
     // Check if the restart button is hovered or pressed
-    if (CheckCollisionPointRec(mousePoint, buttonPositions_[std::to_underlying(bd::Button::Restart)]))
+    if (CheckCollisionPointRec(mousePoint, buttonPositions_[std::to_underlying(gui::Button::Restart)]))
     {
         if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
         {
-            restartBtnState_ = bd::ButtonState::Selected;
+            restartBtnState_ = gui::ButtonState::Selected;
         }
         else
         {
-            restartBtnState_ = bd::ButtonState::Hovered;
+            restartBtnState_ = gui::ButtonState::Hovered;
         }
 
         if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT))
@@ -119,15 +110,15 @@ void Board::Update()
     }
     else
     {
-        restartBtnState_ = bd::ButtonState::Unselected;
+        restartBtnState_ = gui::ButtonState::Unselected;
     }
 
     // Check if the undo button is hovered or pressed
-    if (CheckCollisionPointRec(mousePoint, buttonPositions_[std::to_underlying(bd::Button::Undo)]))
+    if (CheckCollisionPointRec(mousePoint, buttonPositions_[std::to_underlying(gui::Button::Undo)]))
     {
         if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
         {
-            undoBtnState_ = bd::ButtonState::Selected;
+            undoBtnState_ = gui::ButtonState::Selected;
         }
         else if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT))
         {
@@ -135,20 +126,20 @@ void Board::Update()
         }
         else
         {
-            undoBtnState_ = bd::ButtonState::Hovered;
+            undoBtnState_ = gui::ButtonState::Hovered;
         }
     }
     else
     {
-        undoBtnState_ = bd::ButtonState::Unselected;
+        undoBtnState_ = gui::ButtonState::Unselected;
     }
 
     // Check if the help butoon is hovered or pressed
-    if (CheckCollisionPointRec(mousePoint, buttonPositions_[std::to_underlying(bd::Button::Help)]))
+    if (CheckCollisionPointRec(mousePoint, buttonPositions_[std::to_underlying(gui::Button::Help)]))
     {
         if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
         {
-            helpBtnState_ = bd::ButtonState::Selected;
+            helpBtnState_ = gui::ButtonState::Selected;
         }
         else if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT))
         {
@@ -156,12 +147,12 @@ void Board::Update()
         }
         else
         {
-            helpBtnState_ = bd::ButtonState::Hovered;
+            helpBtnState_ = gui::ButtonState::Hovered;
         }
     }
     else
     {
-        helpBtnState_ = bd::ButtonState::Unselected;
+        helpBtnState_ = gui::ButtonState::Unselected;
     }
 
     // Check if the button is clicked
@@ -169,15 +160,15 @@ void Board::Update()
     {
         switch (btn)
         {
-        case bd::Button::FirstPiece:
-        case bd::Button::SecondPiece:
-        case bd::Button::ThirdPiece:
-        case bd::Button::FourthPiece:
-        case bd::Button::FifthPiece:
-        case bd::Button::SixthPiece:
-        case bd::Button::SeventhPiece:
-        case bd::Button::EighthPiece:
-        case bd::Button::NinthPiece:
+        case gui::Button::FirstPiece:
+        case gui::Button::SecondPiece:
+        case gui::Button::ThirdPiece:
+        case gui::Button::FourthPiece:
+        case gui::Button::FifthPiece:
+        case gui::Button::SixthPiece:
+        case gui::Button::SeventhPiece:
+        case gui::Button::EighthPiece:
+        case gui::Button::NinthPiece:
         {
             const std::shared_ptr<Node> top = history_.top();
 
@@ -228,6 +219,8 @@ void Board::Update()
         {
             history_.pop();
         }
+
+        PlaySound(fxButton_);
     }
 
     // Check if the undo button needs to take action
@@ -238,6 +231,8 @@ void Board::Update()
         {
             history_.pop();
         }
+
+        PlaySound(fxButton_);
     }
 
     // Check if the help button needs to take action
@@ -250,6 +245,8 @@ void Board::Update()
         {
             history_.pop();
         }
+
+        PlaySound(fxButton_);
     }
 
     // Check if the puzzle is completed
@@ -268,12 +265,12 @@ void Board::Draw() const
 
     // Draw text on the buttons
     Rectangle undoBox { undoBtnX_, undoBtnY_, buttonWidth_, buttonHeight_ };
-    if (undoBtnState_ == bd::ButtonState::Selected)
+    if (undoBtnState_ == gui::ButtonState::Selected)
     {
         DrawRectangle(undoBox.x, undoBox.y, undoBox.width, undoBox.height, TANGERINE);
         DrawText(TextFormat("Undo"), undoBtnX_ + 15, undoBtnY_ + 15, 40, WHITE);
     }
-    else if (undoBtnState_ == bd::ButtonState::Hovered)
+    else if (undoBtnState_ == gui::ButtonState::Hovered)
     {
         DrawRectangle(undoBox.x, undoBox.y, undoBox.width, undoBox.height, TIGER);
         DrawText(TextFormat("Undo"), undoBtnX_ + 15, undoBtnY_ + 15, 40, WHITE);
@@ -285,12 +282,12 @@ void Board::Draw() const
     }
 
     Rectangle restartBox { restartBtnX_, restartBtnY_, buttonWidth_, buttonHeight_ };
-    if (restartBtnState_ == bd::ButtonState::Selected)
+    if (restartBtnState_ == gui::ButtonState::Selected)
     {
         DrawRectangle(restartBox.x, restartBox.y, restartBox.width, restartBox.height, CRIMSON);
         DrawText(TextFormat("Restart"), restartBtnX_ + 15, restartBtnY_ + 15, 40, WHITE);
     }
-    else if (restartBtnState_ == bd::ButtonState::Hovered)
+    else if (restartBtnState_ == gui::ButtonState::Hovered)
     {
         DrawRectangle(restartBox.x, restartBox.y, restartBox.width, restartBox.height, FIREBRICK);
         DrawText(TextFormat("Restart"), restartBtnX_ + 15, restartBtnY_ + 15, 40, WHITE);
@@ -302,12 +299,12 @@ void Board::Draw() const
     }
 
     Rectangle helpBox { helpBtnX_, helpBtnY_, buttonWidth_, buttonHeight_ };
-    if (helpBtnState_ == bd::ButtonState::Selected)
+    if (helpBtnState_ == gui::ButtonState::Selected)
     {
         DrawRectangle(helpBox.x, helpBox.y, helpBox.width, helpBox.height, DEEP_SKY_BLUE);
         DrawText(TextFormat("Help"), helpBtnX_ + 15, helpBtnY_ + 15, 40, WHITE);
     }
-    else if (helpBtnState_ == bd::ButtonState::Hovered)
+    else if (helpBtnState_ == gui::ButtonState::Hovered)
     {
         DrawRectangle(helpBox.x, helpBox.y, helpBox.width, helpBox.height, STEEL_BLUE);
         DrawText(TextFormat("Help"), helpBtnX_ + 15, helpBtnY_ + 15, 40, WHITE);
@@ -333,8 +330,8 @@ void Board::Draw() const
 void Board::DrawResult() const
 {
     // Calculate the positions
-    const float rectX = (screenWidth_ - counterWidth) / 2;
-    const float optimalMovesRectY = screenHeight_ / 2 - counterHeight - 10;
+    const float rectX = (screenWidth_ - gui::counterWidth) / 2;
+    const float optimalMovesRectY = screenHeight_ / 2 - gui::counterHeight - 10;
     const float userMovesRectY = screenHeight_ / 2 + 10;
 
     // Construct the text
@@ -342,17 +339,17 @@ void Board::DrawResult() const
     std::string userMovesText = fmt::format("User Moves: {}", moves_);
 
     // Calculate the width of the text
-    int textWidth = std::max(MeasureText(optimalMovesText.c_str(), moveCounterFontSize), MeasureText(userMovesText.c_str(), moveCounterFontSize));
+    int textWidth = std::max(MeasureText(optimalMovesText.c_str(), gui::moveCounterFontSize), MeasureText(userMovesText.c_str(), gui::moveCounterFontSize));
 
     // Construct and draw the rectangles
-    Rectangle optimalMovesRect = { rectX, optimalMovesRectY, counterWidth, counterHeight };
-    Rectangle userMovesRect = { rectX, userMovesRectY, counterWidth, counterHeight };
+    Rectangle optimalMovesRect = { rectX, optimalMovesRectY, gui::counterWidth, gui::counterHeight };
+    Rectangle userMovesRect = { rectX, userMovesRectY, gui::counterWidth, gui::counterHeight };
     DrawRectangleRounded(optimalMovesRect, gui::cornerRadius, gui::segments, LIGHTGRAY);
     DrawRectangleRounded(userMovesRect, gui::cornerRadius, gui::segments, LIGHTGRAY);
 
     // Draw the text
-    DrawText(optimalMovesText.c_str(), rectX + (counterWidth - textWidth) / 2, optimalMovesRectY + (counterHeight - moveCounterFontSize) / 2, moveCounterFontSize, DARKBLUE);
-    DrawText(userMovesText.c_str(), rectX + (counterWidth - textWidth) / 2, userMovesRectY + (counterHeight - moveCounterFontSize) / 2, moveCounterFontSize, MAROON);
+    DrawText(optimalMovesText.c_str(), rectX + (gui::counterWidth - textWidth) / 2, optimalMovesRectY + (gui::counterHeight - gui::moveCounterFontSize) / 2, gui::moveCounterFontSize, DARKBLUE);
+    DrawText(userMovesText.c_str(), rectX + (gui::counterWidth - textWidth) / 2, userMovesRectY + (gui::counterHeight - gui::moveCounterFontSize) / 2, gui::moveCounterFontSize, MAROON);
 }
 
 void Board::UpdateSolution()
@@ -388,9 +385,9 @@ void Board::DrawSolution() const
 
 void Board::Reset()
 {
-    restartBtnState_ = bd::ButtonState::Unselected;
-    undoBtnState_ = bd::ButtonState::Unselected;
-    helpBtnState_ = bd::ButtonState::Unselected;
+    restartBtnState_ = gui::ButtonState::Unselected;
+    undoBtnState_ = gui::ButtonState::Unselected;
+    helpBtnState_ = gui::ButtonState::Unselected;
     isSolved_ = false;
     requestedHelp_ = false;
     moves_ = INT_MAX;
@@ -413,9 +410,9 @@ void Board::Reset()
 void Board::Restart()
 {
     // Reset all members
-    restartBtnState_ = bd::ButtonState::Unselected;
-    undoBtnState_ = bd::ButtonState::Unselected;
-    helpBtnState_ = bd::ButtonState::Unselected;
+    restartBtnState_ = gui::ButtonState::Unselected;
+    undoBtnState_ = gui::ButtonState::Unselected;
+    helpBtnState_ = gui::ButtonState::Unselected;
     isSolved_ = false;
     requestedHelp_ = false;
     moves_ = INT_MAX;
@@ -428,19 +425,19 @@ void Board::Restart()
     }
 }
 
-bd::Button Board::CheckWhichButtonIsPressed(const Vector2 &mousePoint)
+gui::Button Board::CheckWhichButtonIsPressed(const Vector2 &mousePoint)
 {
     // Loop through all pieces on the board
-    for (size_t i = 0; i <= std::to_underlying(bd::Button::NinthPiece); i++)
+    for (size_t i = 0; i <= std::to_underlying(gui::Button::NinthPiece); i++)
     {
         if (CheckCollisionPointRec(mousePoint, buttonPositions_[i]))
         {
-            return (bd::Button)i;
+            return (gui::Button)i;
         }
     }
 
     // Not button is pressed
-    return bd::Button::Invalid;
+    return gui::Button::Invalid;
 }
 
 void Board::DrawBoard() const

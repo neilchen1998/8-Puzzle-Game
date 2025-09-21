@@ -9,6 +9,41 @@ namespace gui
     constexpr int segments = 10;
     constexpr int instructionFontSize = 20;
     constexpr int moveCounterFontSize = 25;
-}
+
+    enum class Button
+    {
+        // Puzzle pieces
+        FirstPiece = 0,
+        SecondPiece,
+        ThirdPiece,
+        FourthPiece,
+        FifthPiece,
+        SixthPiece,
+        SeventhPiece,
+        EighthPiece,
+        NinthPiece,
+
+        // Buttons
+        NewGame,
+        Restart,
+        Undo,
+        Help,
+
+        Invalid,
+
+        // The size of the enum
+        ButtonN
+    };
+
+    enum class ButtonState
+    {
+        Unselected,
+        Hovered,
+        Selected
+    };
+
+}   // namespace gui
+
+
 
 #endif // INCLUDE_GUI_BUTTONLIB_H_

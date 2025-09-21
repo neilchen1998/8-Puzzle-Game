@@ -8,40 +8,14 @@
 #include "slidr/constants/constantslib.hpp"   // constants::EMPTY
 #include "slidr/node/nodelib.hpp" // Node, GetState()
 
-namespace bd
+#include "gui/buttonlib.hpp"
+
+namespace gui
 {
-    enum class Button
-    {
-        // Puzzle pieces
-        FirstPiece = 0,
-        SecondPiece,
-        ThirdPiece,
-        FourthPiece,
-        FifthPiece,
-        SixthPiece,
-        SeventhPiece,
-        EighthPiece,
-        NinthPiece,
-
-        // Buttons
-        NewGame,
-        Restart,
-        Undo,
-        Help,
-
-        Invalid,
-
-        // The size of the enum
-        ButtonN
-    };
-
-    enum class ButtonState
-    {
-        Unselected,
-        Hovered,
-        Selected
-    };
-}   // namespace bd
+    constexpr int boardWidth = 500;
+    constexpr int boardHeight = 500;
+    constexpr int borderThickness = 10;
+}   // namespace gui
 
 class Board
 {
@@ -90,7 +64,7 @@ private:
     /// @brief Check which button is pressed
     /// @param mousePoint The vector of the mouse cursor
     /// @return The button that is pressed
-    bd::Button CheckWhichButtonIsPressed(const Vector2& mousePoint);
+    gui::Button CheckWhichButtonIsPressed(const Vector2& mousePoint);
 
     /// @brief Draw the board
     void DrawBoard() const;
@@ -170,13 +144,13 @@ private:
     std::stack<std::shared_ptr<Node>> history_;
 
     /// @brief The state of restart button
-    bd::ButtonState restartBtnState_;
+    gui::ButtonState restartBtnState_;
 
     /// @brief The state of undo button
-    bd::ButtonState undoBtnState_;
+    gui::ButtonState undoBtnState_;
 
     /// @brief The state of help button
-    bd::ButtonState helpBtnState_;
+    gui::ButtonState helpBtnState_;
 
     /// @brief The action of the restart button
     bool restartBtnAction_;
@@ -206,7 +180,7 @@ private:
     unsigned optimalMoves_;
 
     /// @brief The sound effect for buttons
-    Sound fxButton;
+    Sound fxButton_;
 };
 
 #endif // INCLUDE_GUI_BOARDLIB_H_
