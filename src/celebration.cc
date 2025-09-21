@@ -12,6 +12,31 @@ Celebration::Celebration()
     {
         return GenerateConfetti();
     });
+
+    applause_ = LoadSound("resources/applause.wav");
+}
+
+Celebration::~Celebration()
+{
+    UnloadSound(applause_);
+}
+
+void Celebration::PlayApplauseSound()
+{
+    // Checks if the sound is NOT playing
+    if (!IsSoundPlaying(applause_))
+    {
+        PlaySound(applause_);
+    }
+}
+
+void Celebration::StopApplauseSound()
+{
+    // Checks if the sound is playing
+    if (IsSoundPlaying(applause_))
+    {
+        StopSound(applause_);
+    }
 }
 
 void Celebration::Update()
