@@ -16,7 +16,7 @@ set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 FetchContent_Declare(
   slidr
   GIT_REPOSITORY https://github.com/neilchen1998/slidr
-  GIT_TAG        v2.1.2)
+  GIT_TAG        v2.1.3)
 FetchContent_MakeAvailable(slidr)
 
 file(GLOB GUI_HEADER_LIST CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/include/gui/*.hpp")
