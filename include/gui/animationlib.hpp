@@ -57,7 +57,7 @@ private:
 
     const int logoPositionY_;
 
-    /// @brief 
+    /// @brief
     int bottomSideRecWidth_;
 
     int rightSideRecHeight_;

@@ -19,7 +19,7 @@ struct Confetti
     /// @brief The x and y component of the velocity of the confetti
     Vector2 velocity;
 
-    /// @brief The physical size in pixel of the confetti 
+    /// @brief The physical size in pixel of the confetti
     Vector2 size;
 
     /// @brief The orientation of the confetti
