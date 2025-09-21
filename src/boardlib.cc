@@ -4,7 +4,7 @@
 #include <vector>   // std::vector
 
 #include "raylib.h"     // LoadTexture, Vector2, Rectangle
-#include "slidr/solver/solverlib.hpp"
+#include "slidr/solver/solverlib.hpp"   // slidr::Solver
 #include "fmt/core.h"   // fmt::format
 
 #include "gui/boardlib.hpp"
@@ -71,6 +71,8 @@ Board::Board()
     itr_ = solutionDir_.cbegin();
 
     optimalMoves_ = (solutionDir_.size() - 1);
+
+    fxButton_ = LoadSound("resources/buttonfx.wav");
 }
 
 Board::~Board()
@@ -217,6 +219,8 @@ void Board::Update()
         {
             history_.pop();
         }
+
+        PlaySound(fxButton_);
     }
 
     // Check if the undo button needs to take action
@@ -227,6 +231,8 @@ void Board::Update()
         {
             history_.pop();
         }
+
+        PlaySound(fxButton_);
     }
 
     // Check if the help button needs to take action
@@ -239,6 +245,8 @@ void Board::Update()
         {
             history_.pop();
         }
+
+        PlaySound(fxButton_);
     }
 
     // Check if the puzzle is completed

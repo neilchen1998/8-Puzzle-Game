@@ -27,6 +27,6 @@ apply_compiler_flags(gui_library)
 
 target_include_directories(gui_library PUBLIC ../include)
 
-target_link_libraries(gui_library PUBLIC node_library raylib fmt::fmt Slidr::slidr)
+target_link_libraries(gui_library PUBLIC raylib fmt::fmt Slidr::slidr)
 
 target_compile_features(gui_library PUBLIC cxx_std_23)  # requires C++23 for std::to_underlying
