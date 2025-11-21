@@ -1,0 +1,47 @@
+name: Check Whitespaces
+
+on: [push, pull_request]
+
+jobs:
+  check-whitespace:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check for trailing whitespace
+        run: |
+          echo "Checking for trailing white spaces and tabs..."
+
+          FILES=$(find . \( -name '*.h' -o -name '*.cpp' -o -name '*.c' -o -name '*.py' \) -print)
+
+          if [ -z "$FILES" ]; then
+            echo "No files found"
+            exit 0
+          fi
+
+          OUTPUT=$(perl -ne '
+            if (/[ \t]+$/) {
+                # Copy the original line from $_ to $orig
+                my $orig = $_;
+
+                # Remove newlines
+                chomp $orig;
+                my $vis = $orig;
+
+                # Find the number of trailing spaces and replace them with ␠
+                $vis =~ s/ +$/("␠" x length($&))/e;
+
+                # Find the number of trailing tabs and replace them with ⇥
+                $vis =~ s/\t+$/("⇥" x length($&))/e;
+
+                print "$ARGV:$.:$vis\n";
+            }
+          ' $FILES)
+
+          if [ -n "$OUTPUT" ]; then
+            echo "Trailing whitespaces or tabs found:"
+            echo "$OUTPUT"
+            exit 1
+          else
+            echo "No trailing whitespace or tab found."
+            exit 0
+          fi
