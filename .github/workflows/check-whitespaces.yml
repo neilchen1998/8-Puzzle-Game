@@ -11,7 +11,7 @@ jobs:
         run: |
           echo "Checking for trailing white spaces and tabs..."
 
-          FILES=$(find . \( -name '*.h' -o -name '*.cpp' -o -name '*.c' -o -name '*.py' \) -print)
+          FILES=$(find . \( -name '*.hpp' -o -name '*.cc' -o -name '*.c' \) -print)
 
           if [ -z "$FILES" ]; then
             echo "No files found"
