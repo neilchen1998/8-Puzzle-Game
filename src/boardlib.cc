@@ -1,47 +1,34 @@
-#include <memory>   // std::make_unique
-#include <span>     // std::span
-#include <utility>  // std::to_underlying
-#include <vector>   // std::vector
+#include <memory>  // std::make_unique
+#include <span>    // std::span
+#include <utility> // std::to_underlying
+#include <vector>  // std::vector
 
-#include "raylib.h"     // LoadTexture, Vector2, Rectangle
-#include "slidr/solver/solverlib.hpp"   // slidr::Solver
-#include "fmt/core.h"   // fmt::format
+#include "fmt/core.h"                 // fmt::format
+#include "raylib.h"                   // LoadTexture, Vector2, Rectangle
+#include "slidr/solver/solverlib.hpp" // slidr::Solver
 
-#include "gui/boardlib.hpp"
-#include "gui/colourlib.hpp"
-#include "gui/buttonlib.hpp"
 #include "creator/creatorlib.hpp"
+#include "gui/boardlib.hpp"
+#include "gui/buttonlib.hpp"
+#include "gui/colourlib.hpp"
 
 Board::Board()
-    : screenWidth_(GetScreenWidth()),
-    screenHeight_(GetScreenHeight()),
-    numbers_(LoadTexture("resources/numbers.png")),
-    boardWidth__(gui::boardWidth),
-    boardHeight_(gui::boardHeight),
-    borderThickness_(gui::borderThickness),
-    boxX_((screenWidth_ - boardWidth__) / 2),
-    boxY_((screenHeight_ - boardHeight_) / 2),
-    buttonWidth_(200),
-    buttonHeight_(80),
-    undoBtnX_((screenHeight_ + boardHeight_) / 2 + borderThickness_),
-    undoBtnY_((screenHeight_ - boardHeight_) / 2),
-    restartBtnX_((screenHeight_ + boardHeight_) / 2 + borderThickness_),
-    restartBtnY_(undoBtnY_ + buttonHeight_ + borderThickness_),
-    helpBtnX_((screenHeight_ + boardHeight_) / 2 + borderThickness_),
-    helpBtnY_(restartBtnY_ + buttonHeight_ + borderThickness_),
-    N_(constants::EIGHT_PUZZLE_SIZE),
-    cellWidth_(boardWidth__ / N_),
-    cellHeight_(boardHeight_ / N_),
-    w(numbers_.width / 5.0f),
-    h(numbers_.height / 2.0f),
-    offsetW_(cellWidth_ / 5),
-    offsetH_(cellHeight_ / 8),
-    restartBtnState_(gui::ButtonState::Unselected),
-    undoBtnState_(gui::ButtonState::Unselected),
-    helpBtnState_(gui::ButtonState::Unselected),
-    isSolved_(false),
-    requestedHelp_(false),
-    moves_(INT_MAX)
+    : screenWidth_(GetScreenWidth()), screenHeight_(GetScreenHeight()),
+      numbers_(LoadTexture("resources/numbers.png")), boardWidth__(gui::boardWidth),
+      boardHeight_(gui::boardHeight), borderThickness_(gui::borderThickness),
+      boxX_((screenWidth_ - boardWidth__) / 2), boxY_((screenHeight_ - boardHeight_) / 2),
+      buttonWidth_(200), buttonHeight_(80),
+      undoBtnX_((screenHeight_ + boardHeight_) / 2 + borderThickness_),
+      undoBtnY_((screenHeight_ - boardHeight_) / 2),
+      restartBtnX_((screenHeight_ + boardHeight_) / 2 + borderThickness_),
+      restartBtnY_(undoBtnY_ + buttonHeight_ + borderThickness_),
+      helpBtnX_((screenHeight_ + boardHeight_) / 2 + borderThickness_),
+      helpBtnY_(restartBtnY_ + buttonHeight_ + borderThickness_), N_(constants::EIGHT_PUZZLE_SIZE),
+      cellWidth_(boardWidth__ / N_), cellHeight_(boardHeight_ / N_), w(numbers_.width / 5.0f),
+      h(numbers_.height / 2.0f), offsetW_(cellWidth_ / 5), offsetH_(cellHeight_ / 8),
+      restartBtnState_(gui::ButtonState::Unselected), undoBtnState_(gui::ButtonState::Unselected),
+      helpBtnState_(gui::ButtonState::Unselected), isSolved_(false), requestedHelp_(false),
+      moves_(INT_MAX)
 {
     buttonPositions_.resize(std::to_underlying(gui::Button::ButtonN));
 
@@ -50,19 +37,22 @@ Board::Board()
     {
         float posX = boxX_ + ((i % 3) * cellWidth_);
         float posY = boxY_ + ((i / 3) * cellHeight_);
-        buttonPositions_[i] = Rectangle {posX, posY, cellWidth_, cellHeight_};
+        buttonPositions_[i] = Rectangle{posX, posY, cellWidth_, cellHeight_};
     }
 
-    buttonPositions_[std::to_underlying(gui::Button::Undo)] = Rectangle {undoBtnX_, undoBtnY_, buttonWidth_, buttonHeight_};
-    buttonPositions_[std::to_underlying(gui::Button::Restart)] = Rectangle {restartBtnX_, restartBtnY_, buttonWidth_, buttonHeight_};
-    buttonPositions_[std::to_underlying(gui::Button::Help)] = Rectangle {helpBtnX_, helpBtnY_, buttonWidth_, buttonHeight_};
+    buttonPositions_[std::to_underlying(gui::Button::Undo)] =
+        Rectangle{undoBtnX_, undoBtnY_, buttonWidth_, buttonHeight_};
+    buttonPositions_[std::to_underlying(gui::Button::Restart)] =
+        Rectangle{restartBtnX_, restartBtnY_, buttonWidth_, buttonHeight_};
+    buttonPositions_[std::to_underlying(gui::Button::Help)] =
+        Rectangle{helpBtnX_, helpBtnY_, buttonWidth_, buttonHeight_};
 
     std::vector<int> initalLayout = creator::GetRandomLayout();
     std::shared_ptr<Node> startNode = std::make_shared<Node>(initalLayout);
 
     history_.push(startNode);
 
-    slidr::Solver s {*history_.top()};
+    slidr::Solver s{*history_.top()};
 
     s.SolvePuzzle();
 
@@ -92,7 +82,8 @@ void Board::Update()
     helpBtnAction_ = false;
 
     // Check if the restart button is hovered or pressed
-    if (CheckCollisionPointRec(mousePoint, buttonPositions_[std::to_underlying(gui::Button::Restart)]))
+    if (CheckCollisionPointRec(mousePoint,
+                               buttonPositions_[std::to_underlying(gui::Button::Restart)]))
     {
         if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
         {
@@ -185,22 +176,26 @@ void Board::Update()
             if (((xCol + 1) == btnCol) && (xRow == btnRow))
             {
                 auto [childLayout, childPosX] = top->GetNextLayout(constants::RIGHT);
-                history_.push(std::make_shared<Node>(childLayout, childPosX, top->GetDepth() + 1, top, constants::RIGHT));
+                history_.push(std::make_shared<Node>(childLayout, childPosX, top->GetDepth() + 1,
+                                                     top, constants::RIGHT));
             }
             else if (((xCol - 1) == btnCol) && (xRow == btnRow))
             {
                 auto [childLayout, childPosX] = top->GetNextLayout(constants::LEFT);
-                history_.push(std::make_shared<Node>(childLayout, childPosX, top->GetDepth() + 1, top, constants::LEFT));
+                history_.push(std::make_shared<Node>(childLayout, childPosX, top->GetDepth() + 1,
+                                                     top, constants::LEFT));
             }
             else if (((xRow + 1) == btnRow) && (xCol == btnCol))
             {
                 auto [childLayout, childPosX] = top->GetNextLayout(constants::DOWN);
-                history_.push(std::make_shared<Node>(childLayout, childPosX, top->GetDepth() + 1, top, constants::DOWN));
+                history_.push(std::make_shared<Node>(childLayout, childPosX, top->GetDepth() + 1,
+                                                     top, constants::DOWN));
             }
             else if (((xRow - 1) == btnRow) && (xCol == btnCol))
             {
                 auto [childLayout, childPosX] = top->GetNextLayout(constants::UP);
-                history_.push(std::make_shared<Node>(childLayout, childPosX, top->GetDepth() + 1, top, constants::UP));
+                history_.push(std::make_shared<Node>(childLayout, childPosX, top->GetDepth() + 1,
+                                                     top, constants::UP));
             }
             break;
         }
@@ -264,7 +259,7 @@ void Board::Draw() const
     DrawBoard();
 
     // Draw text on the buttons
-    Rectangle undoBox { undoBtnX_, undoBtnY_, buttonWidth_, buttonHeight_ };
+    Rectangle undoBox{undoBtnX_, undoBtnY_, buttonWidth_, buttonHeight_};
     if (undoBtnState_ == gui::ButtonState::Selected)
     {
         DrawRectangle(undoBox.x, undoBox.y, undoBox.width, undoBox.height, TANGERINE);
@@ -281,7 +276,7 @@ void Board::Draw() const
         DrawText(TextFormat("Undo"), undoBtnX_ + 15, undoBtnY_ + 15, 40, WHITE);
     }
 
-    Rectangle restartBox { restartBtnX_, restartBtnY_, buttonWidth_, buttonHeight_ };
+    Rectangle restartBox{restartBtnX_, restartBtnY_, buttonWidth_, buttonHeight_};
     if (restartBtnState_ == gui::ButtonState::Selected)
     {
         DrawRectangle(restartBox.x, restartBox.y, restartBox.width, restartBox.height, CRIMSON);
@@ -298,7 +293,7 @@ void Board::Draw() const
         DrawText(TextFormat("Restart"), restartBtnX_ + 15, restartBtnY_ + 15, 40, WHITE);
     }
 
-    Rectangle helpBox { helpBtnX_, helpBtnY_, buttonWidth_, buttonHeight_ };
+    Rectangle helpBox{helpBtnX_, helpBtnY_, buttonWidth_, buttonHeight_};
     if (helpBtnState_ == gui::ButtonState::Selected)
     {
         DrawRectangle(helpBox.x, helpBox.y, helpBox.width, helpBox.height, DEEP_SKY_BLUE);
@@ -319,11 +314,13 @@ void Board::Draw() const
     const int depth = history_.top()->GetDepth();
     if (depth < 100)
     {
-        DrawText(TextFormat("Moves: %02i", depth), (screenWidth_ - boardWidth__) / 2, (screenHeight_ - boardHeight_) / 2 - 40, 40, BLUE);
+        DrawText(TextFormat("Moves: %02i", depth), (screenWidth_ - boardWidth__) / 2,
+                 (screenHeight_ - boardHeight_) / 2 - 40, 40, BLUE);
     }
     else
     {
-        DrawText(TextFormat("Moves: %03i", depth), (screenWidth_ - boardWidth__) / 2, (screenHeight_ - boardHeight_) / 2 - 40, 40, BLUE);
+        DrawText(TextFormat("Moves: %03i", depth), (screenWidth_ - boardWidth__) / 2,
+                 (screenHeight_ - boardHeight_) / 2 - 40, 40, BLUE);
     }
 }
 
@@ -339,17 +336,22 @@ void Board::DrawResult() const
     std::string userMovesText = fmt::format("User Moves: {}", moves_);
 
     // Calculate the width of the text
-    int textWidth = std::max(MeasureText(optimalMovesText.c_str(), gui::moveCounterFontSize), MeasureText(userMovesText.c_str(), gui::moveCounterFontSize));
+    int textWidth = std::max(MeasureText(optimalMovesText.c_str(), gui::moveCounterFontSize),
+                             MeasureText(userMovesText.c_str(), gui::moveCounterFontSize));
 
     // Construct and draw the rectangles
-    Rectangle optimalMovesRect = { rectX, optimalMovesRectY, gui::counterWidth, gui::counterHeight };
-    Rectangle userMovesRect = { rectX, userMovesRectY, gui::counterWidth, gui::counterHeight };
+    Rectangle optimalMovesRect = {rectX, optimalMovesRectY, gui::counterWidth, gui::counterHeight};
+    Rectangle userMovesRect = {rectX, userMovesRectY, gui::counterWidth, gui::counterHeight};
     DrawRectangleRounded(optimalMovesRect, gui::cornerRadius, gui::segments, LIGHTGRAY);
     DrawRectangleRounded(userMovesRect, gui::cornerRadius, gui::segments, LIGHTGRAY);
 
     // Draw the text
-    DrawText(optimalMovesText.c_str(), rectX + (gui::counterWidth - textWidth) / 2, optimalMovesRectY + (gui::counterHeight - gui::moveCounterFontSize) / 2, gui::moveCounterFontSize, DARKBLUE);
-    DrawText(userMovesText.c_str(), rectX + (gui::counterWidth - textWidth) / 2, userMovesRectY + (gui::counterHeight - gui::moveCounterFontSize) / 2, gui::moveCounterFontSize, MAROON);
+    DrawText(optimalMovesText.c_str(), rectX + (gui::counterWidth - textWidth) / 2,
+             optimalMovesRectY + (gui::counterHeight - gui::moveCounterFontSize) / 2,
+             gui::moveCounterFontSize, DARKBLUE);
+    DrawText(userMovesText.c_str(), rectX + (gui::counterWidth - textWidth) / 2,
+             userMovesRectY + (gui::counterHeight - gui::moveCounterFontSize) / 2,
+             gui::moveCounterFontSize, MAROON);
 }
 
 void Board::UpdateSolution()
@@ -361,7 +363,8 @@ void Board::UpdateSolution()
         const std::shared_ptr<Node> top = history_.top();
 
         auto [childLayout, childPosX] = top->GetNextLayout(*itr_);
-        history_.push(std::make_shared<Node>(childLayout, childPosX, top->GetDepth() + 1, top, *itr_));
+        history_.push(
+            std::make_shared<Node>(childLayout, childPosX, top->GetDepth() + 1, top, *itr_));
 
         prevTime = curTime;
 
@@ -380,7 +383,8 @@ void Board::DrawSolution() const
 
     // Draw text on the top
     // NOTE: the number of moves is always 2 digits only
-    DrawText(TextFormat("Moves: %02i", history_.top()->GetDepth()), (screenWidth_ - boardWidth__) / 2, (screenHeight_ - boardHeight_) / 2 - 40, 40, BLUE);
+    DrawText(TextFormat("Moves: %02i", history_.top()->GetDepth()),
+             (screenWidth_ - boardWidth__) / 2, (screenHeight_ - boardHeight_) / 2 - 40, 40, BLUE);
 }
 
 void Board::Reset()
@@ -400,7 +404,7 @@ void Board::Reset()
     newHistory.push(startNode);
     std::swap(history_, newHistory);
 
-    slidr::Solver s {*history_.top()};
+    slidr::Solver s{*history_.top()};
 
     s.SolvePuzzle();
 
@@ -443,7 +447,7 @@ gui::Button Board::CheckWhichButtonIsPressed(const Vector2 &mousePoint)
 void Board::DrawBoard() const
 {
     // Draw the board
-    Rectangle box { boxX_, boxY_, (float)boardWidth__, (float)boardHeight_ };
+    Rectangle box{boxX_, boxY_, (float)boardWidth__, (float)boardHeight_};
     DrawRectangleLinesEx(box, borderThickness_, DARKBLUE);
 
     // Draw the lines
@@ -451,14 +455,14 @@ void Board::DrawBoard() const
     {
         // Draw horizontal lines
         float y = boxY_ + (i * cellHeight_);
-        Vector2 startPos = { boxX_, y };
-        Vector2 endPos = { boxX_ + boardWidth__, y };
+        Vector2 startPos = {boxX_, y};
+        Vector2 endPos = {boxX_ + boardWidth__, y};
         DrawLineEx(startPos, endPos, borderThickness_, DARKBLUE);
 
         // Draw vertical lines
         float x = boxX_ + (i * cellWidth_);
-        startPos = { x, boxY_ };
-        endPos = { x, boxY_ + boardHeight_ };
+        startPos = {x, boxY_};
+        endPos = {x, boxY_ + boardHeight_};
         DrawLineEx(startPos, endPos, borderThickness_, DARKBLUE);
     }
 
@@ -472,12 +476,12 @@ void Board::DrawBoard() const
             // Calculate the position of the number located on the texture (sprite sheet technique)
             int recX = (num - 1) % 5;
             int recY = (num - 1) / 5;
-            Rectangle sourceRec = { recX * w, recY * h, w, h };
+            Rectangle sourceRec = {recX * w, recY * h, w, h};
 
             // Calculate the position of the texture
             float posX = boxX_ + ((i % 3) * cellWidth_) + offsetW_;
             float posY = boxY_ + ((i / 3) * cellHeight_) + offsetH_;
-            Vector2 position = { posX, posY };
+            Vector2 position = {posX, posY};
 
             // Draw a fraction of the texture
             DrawTextureRec(numbers_, sourceRec, position, WHITE);

@@ -1,11 +1,11 @@
 #ifndef INCLUDE_GUI_CELEBRATIONLIB_H_
 #define INCLUDE_GUI_CELEBRATIONLIB_H_
 
-#include <vector>   // std::vector
-#include <array>   // std::array
+#include <array>  // std::array
+#include <vector> // std::vector
 
-#include "raylib.h" // Vector2
-#include "gui/colourlib.hpp"    // LIGHT_CORAL, APRICOT, LEMON, etc.
+#include "gui/colourlib.hpp" // LIGHT_CORAL, APRICOT, LEMON, etc.
+#include "raylib.h"          // Vector2
 
 class Celebration
 {
@@ -72,7 +72,8 @@ private:
     static constexpr std::size_t MAX_NUM_CONFETTI = 400;
 
     /// @brief the colours of the confetti
-    static constexpr std::array<Color, 6> CONFETTI_COLOURS { LIGHT_CORAL, APRICOT, LEMON, MINT, SKY_BLUE, LAVENDER };
+    static constexpr std::array<Color, 6> CONFETTI_COLOURS{LIGHT_CORAL, APRICOT,  LEMON,
+                                                           MINT,        SKY_BLUE, LAVENDER};
 };
 
 #endif // INCLUDE_GUI_CELEBRATIONLIB_H_

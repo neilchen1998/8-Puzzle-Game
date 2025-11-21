@@ -1,11 +1,11 @@
 #ifndef INCLUDE_GUI_SCREENLIB_H_
 #define INCLUDE_GUI_SCREENLIB_H_
 
-#include <memory>   // std::unique_ptr, std::make_unique
+#include <memory> // std::unique_ptr, std::make_unique
 
 #include "gui/animationlib.hpp"
 #include "gui/boardlib.hpp"
-#include "gui/celebrationlib.hpp"   // Celebration
+#include "gui/celebrationlib.hpp" // Celebration
 
 /// @brief The states of the game
 enum struct GameScreenState : int

@@ -3,47 +3,45 @@
 
 namespace gui
 {
-    constexpr int counterWidth = 250;
-    constexpr int counterHeight = 60;
-    constexpr float cornerRadius = 0.3f;
-    constexpr int segments = 10;
-    constexpr int instructionFontSize = 20;
-    constexpr int moveCounterFontSize = 25;
+constexpr int counterWidth = 250;
+constexpr int counterHeight = 60;
+constexpr float cornerRadius = 0.3f;
+constexpr int segments = 10;
+constexpr int instructionFontSize = 20;
+constexpr int moveCounterFontSize = 25;
 
-    enum class Button
-    {
-        // Puzzle pieces
-        FirstPiece = 0,
-        SecondPiece,
-        ThirdPiece,
-        FourthPiece,
-        FifthPiece,
-        SixthPiece,
-        SeventhPiece,
-        EighthPiece,
-        NinthPiece,
+enum class Button
+{
+    // Puzzle pieces
+    FirstPiece = 0,
+    SecondPiece,
+    ThirdPiece,
+    FourthPiece,
+    FifthPiece,
+    SixthPiece,
+    SeventhPiece,
+    EighthPiece,
+    NinthPiece,
 
-        // Buttons
-        NewGame,
-        Restart,
-        Undo,
-        Help,
+    // Buttons
+    NewGame,
+    Restart,
+    Undo,
+    Help,
 
-        Invalid,
+    Invalid,
 
-        // The size of the enum
-        ButtonN
-    };
+    // The size of the enum
+    ButtonN
+};
 
-    enum class ButtonState
-    {
-        Unselected,
-        Hovered,
-        Selected
-    };
+enum class ButtonState
+{
+    Unselected,
+    Hovered,
+    Selected
+};
 
-}   // namespace gui
-
-
+} // namespace gui
 
 #endif // INCLUDE_GUI_BUTTONLIB_H_
