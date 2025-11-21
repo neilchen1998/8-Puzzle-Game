@@ -15,9 +15,12 @@ constexpr std::string_view newGameTxt("New Game");
 } // namespace
 
 ScreenManager::ScreenManager()
-    : curState_(GameScreenState::LOGO), screenWidth_(GetScreenWidth()),
-      screenHeight_(GetScreenHeight()), raylibAnimationPtr_(std::make_unique<RaylibAnimation>()),
-      boardPtr_(std::make_unique<Board>()), celebrationPtr_(std::make_unique<Celebration>())
+    : curState_(GameScreenState::LOGO),
+      screenWidth_(GetScreenWidth()),
+      screenHeight_(GetScreenHeight()),
+      raylibAnimationPtr_(std::make_unique<RaylibAnimation>()),
+      boardPtr_(std::make_unique<Board>()),
+      celebrationPtr_(std::make_unique<Celebration>())
 {
     restartTxtWidth_ = MeasureText(restartTxt.data(), buttonFontSize);
     newGameTxtWidth_ = MeasureText(newGameTxt.data(), buttonFontSize);

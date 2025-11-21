@@ -67,7 +67,8 @@ private:
     /// @brief The top right side rectangle width
     int rightSideRecHeight_;
 
-    /// @brief The counter that counts the number of frames since animation begins
+    /// @brief The counter that counts the number of frames since animation
+    /// begins
     unsigned long framesCounter_;
 
     /// @brief the width of Raylib

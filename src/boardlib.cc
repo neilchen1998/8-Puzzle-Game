@@ -13,21 +13,34 @@
 #include "gui/colourlib.hpp"
 
 Board::Board()
-    : screenWidth_(GetScreenWidth()), screenHeight_(GetScreenHeight()),
-      numbers_(LoadTexture("resources/numbers.png")), boardWidth__(gui::boardWidth),
-      boardHeight_(gui::boardHeight), borderThickness_(gui::borderThickness),
-      boxX_((screenWidth_ - boardWidth__) / 2), boxY_((screenHeight_ - boardHeight_) / 2),
-      buttonWidth_(200), buttonHeight_(80),
+    : screenWidth_(GetScreenWidth()),
+      screenHeight_(GetScreenHeight()),
+      numbers_(LoadTexture("resources/numbers.png")),
+      boardWidth__(gui::boardWidth),
+      boardHeight_(gui::boardHeight),
+      borderThickness_(gui::borderThickness),
+      boxX_((screenWidth_ - boardWidth__) / 2),
+      boxY_((screenHeight_ - boardHeight_) / 2),
+      buttonWidth_(200),
+      buttonHeight_(80),
       undoBtnX_((screenHeight_ + boardHeight_) / 2 + borderThickness_),
       undoBtnY_((screenHeight_ - boardHeight_) / 2),
       restartBtnX_((screenHeight_ + boardHeight_) / 2 + borderThickness_),
       restartBtnY_(undoBtnY_ + buttonHeight_ + borderThickness_),
       helpBtnX_((screenHeight_ + boardHeight_) / 2 + borderThickness_),
-      helpBtnY_(restartBtnY_ + buttonHeight_ + borderThickness_), N_(constants::EIGHT_PUZZLE_SIZE),
-      cellWidth_(boardWidth__ / N_), cellHeight_(boardHeight_ / N_), w(numbers_.width / 5.0f),
-      h(numbers_.height / 2.0f), offsetW_(cellWidth_ / 5), offsetH_(cellHeight_ / 8),
-      restartBtnState_(gui::ButtonState::Unselected), undoBtnState_(gui::ButtonState::Unselected),
-      helpBtnState_(gui::ButtonState::Unselected), isSolved_(false), requestedHelp_(false),
+      helpBtnY_(restartBtnY_ + buttonHeight_ + borderThickness_),
+      N_(constants::EIGHT_PUZZLE_SIZE),
+      cellWidth_(boardWidth__ / N_),
+      cellHeight_(boardHeight_ / N_),
+      w(numbers_.width / 5.0f),
+      h(numbers_.height / 2.0f),
+      offsetW_(cellWidth_ / 5),
+      offsetH_(cellHeight_ / 8),
+      restartBtnState_(gui::ButtonState::Unselected),
+      undoBtnState_(gui::ButtonState::Unselected),
+      helpBtnState_(gui::ButtonState::Unselected),
+      isSolved_(false),
+      requestedHelp_(false),
       moves_(INT_MAX)
 {
     buttonPositions_.resize(std::to_underlying(gui::Button::ButtonN));
@@ -221,7 +234,8 @@ void Board::Update()
     // Check if the undo button needs to take action
     if (undoBtnAction_)
     {
-        // Pop the stack (history) iff there are more than one element in the stack
+        // Pop the stack (history) iff there are more than one element in the
+        // stack
         if (history_.size() > 1)
         {
             history_.pop();
@@ -473,7 +487,8 @@ void Board::DrawBoard() const
         // Only draw the number if the current piece is non-empty
         if (int num = curState[i]; num != constants::EMPTY)
         {
-            // Calculate the position of the number located on the texture (sprite sheet technique)
+            // Calculate the position of the number located on the texture
+            // (sprite sheet technique)
             int recX = (num - 1) % 5;
             int recY = (num - 1) / 5;
             Rectangle sourceRec = {recX * w, recY * h, w, h};

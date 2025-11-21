@@ -43,7 +43,10 @@ static constexpr int NUM_OF_CONFETTI = 2'000;
 class Dummy
 {
 public:
-    Dummy() : confetti_(NUM_OF_CONFETTI) {}
+    Dummy()
+        : confetti_(NUM_OF_CONFETTI)
+    {
+    }
 
     void ConstructorA()
     {

@@ -4,7 +4,8 @@
 
 #include "slidr/math/mathlib.hpp" // GetNormalFloatDist, GetUniformIntDist
 
-Celebration::Celebration() : confetti_(MAX_NUM_CONFETTI)
+Celebration::Celebration()
+    : confetti_(MAX_NUM_CONFETTI)
 {
     // Set all confetti to not active
     std::generate(confetti_.begin(), confetti_.end(), [this]() { return GenerateConfetti(); });

@@ -13,11 +13,19 @@ constexpr int recWidth = 256;
 } // namespace
 
 RaylibAnimation::RaylibAnimation()
-    : curState_(LoadingState::SMALL_BOX_BLINKING), screenWidth_(GetScreenHeight()),
-      screenHeight_(GetScreenHeight()), logoPositionX_(screenWidth_ / 2 - recWidth / 2),
-      logoPositionY_(screenHeight_ / 2 - recWidth / 2), leftSideRecHeight_(recHeight),
-      topSideRecWidth_(recHeight), topSideRecHeight_(recHeight), bottomSideRecWidth_(recHeight),
-      rightSideRecHeight_(recHeight), lettersCount_(0), framesCounter_(0), alpha_(1.0f),
+    : curState_(LoadingState::SMALL_BOX_BLINKING),
+      screenWidth_(GetScreenHeight()),
+      screenHeight_(GetScreenHeight()),
+      logoPositionX_(screenWidth_ / 2 - recWidth / 2),
+      logoPositionY_(screenHeight_ / 2 - recWidth / 2),
+      leftSideRecHeight_(recHeight),
+      topSideRecWidth_(recHeight),
+      topSideRecHeight_(recHeight),
+      bottomSideRecWidth_(recHeight),
+      rightSideRecHeight_(recHeight),
+      lettersCount_(0),
+      framesCounter_(0),
+      alpha_(1.0f),
       subTitle_("made by Neil with blood, sweat, and tears")
 {
     subTxtWidth_ = MeasureText(subTitle_.data(), subtxtFont);
