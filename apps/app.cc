@@ -1,12 +1,12 @@
-#include <stdlib.h> // EXIT_SUCCESS, EXIT_FAILURE
-#include <vector>    // std::vector
-#include <chrono>   // std::chrono::high_resolution_clock, std::chrono::duration_cast
-#include <fmt/core.h>   // fmt::print
+#include <chrono>     // std::chrono::high_resolution_clock, std::chrono::duration_cast
+#include <fmt/core.h> // fmt::print
+#include <stdlib.h>   // EXIT_SUCCESS, EXIT_FAILURE
+#include <vector>     // std::vector
 
-#include "raylib.h" // InitWindow, SetTargetFPS,
 #include "fmt/core.h"
+#include "raylib.h" // InitWindow, SetTargetFPS,
 
-#include "gui/screenlib.hpp"    // ScreenManager
+#include "gui/screenlib.hpp" // ScreenManager
 
 #define TARGET_FPS 60
 
@@ -21,21 +21,21 @@ int main(void)
     InitAudioDevice();
 
     // Initialize all required variables and load all required data here!
-    ScreenManager manager {};
+    ScreenManager manager{};
 
     // Set desired framerate (frames-per-second)
     SetTargetFPS(TARGET_FPS);
 
-    while (!WindowShouldClose())    // Detect window close button or ESC key
+    while (!WindowShouldClose()) // Detect window close button or ESC key
     {
-       // Update
-       manager.Update();
+        // Update
+        manager.Update();
 
         // Draw
         BeginDrawing();
 
-            ClearBackground(RAYWHITE);
-            manager.Draw();
+        ClearBackground(RAYWHITE);
+        manager.Draw();
 
         EndDrawing();
     }

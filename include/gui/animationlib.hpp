@@ -1,7 +1,7 @@
 #ifndef INCLUDE_GUI_ANIMATIONLIB_H_
 #define INCLUDE_GUI_ANIMATIONLIB_H_
 
-#include <string>   // std::string
+#include <string> // std::string
 
 class RaylibAnimation
 {
@@ -18,10 +18,7 @@ public:
 
     /// @brief Checks if the animation is finished
     /// @return TRUE if the animation is done
-    inline bool IsDone() const noexcept
-    {
-        return (curState_ == LoadingState::ENDING);
-    }
+    inline bool IsDone() const noexcept { return (curState_ == LoadingState::ENDING); }
 
 public:
     /// @brief The states of the game
@@ -70,7 +67,8 @@ private:
     /// @brief The top right side rectangle width
     int rightSideRecHeight_;
 
-    /// @brief The counter that counts the number of frames since animation begins
+    /// @brief The counter that counts the number of frames since animation
+    /// begins
     unsigned long framesCounter_;
 
     /// @brief the width of Raylib

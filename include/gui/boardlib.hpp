@@ -1,26 +1,25 @@
 #ifndef INCLUDE_GUI_BOARDLIB_H_
 #define INCLUDE_GUI_BOARDLIB_H_
 
-#include <memory>    // std::shared_ptr
-#include <stack>    // std::stack
+#include <memory> // std::shared_ptr
+#include <stack>  // std::stack
 
 #include "raylib.h"
-#include "slidr/constants/constantslib.hpp"   // constants::EMPTY
-#include "slidr/node/nodelib.hpp" // Node, GetState()
+#include "slidr/constants/constantslib.hpp" // constants::EMPTY
+#include "slidr/node/nodelib.hpp"           // Node, GetState()
 
 #include "gui/buttonlib.hpp"
 
 namespace gui
 {
-    constexpr int boardWidth = 500;
-    constexpr int boardHeight = 500;
-    constexpr int borderThickness = 10;
-}   // namespace gui
+constexpr int boardWidth = 500;
+constexpr int boardHeight = 500;
+constexpr int borderThickness = 10;
+} // namespace gui
 
 class Board
 {
 public:
-
     Board();
 
     ~Board();
@@ -42,17 +41,11 @@ public:
 
     /// @brief Checks if the game is finished
     /// @return True if the game is finished
-    inline bool IsFinished() noexcept
-    {
-        return isSolved_;
-    }
+    inline bool IsFinished() noexcept { return isSolved_; }
 
     /// @brief Checks if the game is finished
     /// @return True if the game is finished
-    inline bool RequestedHelp() noexcept
-    {
-        return requestedHelp_;
-    }
+    inline bool RequestedHelp() noexcept { return requestedHelp_; }
 
     /// @brief Resets the board
     void Reset();
@@ -64,7 +57,7 @@ private:
     /// @brief Check which button is pressed
     /// @param mousePoint The vector of the mouse cursor
     /// @return The button that is pressed
-    gui::Button CheckWhichButtonIsPressed(const Vector2& mousePoint);
+    gui::Button CheckWhichButtonIsPressed(const Vector2 &mousePoint);
 
     /// @brief Draw the board
     void DrawBoard() const;
