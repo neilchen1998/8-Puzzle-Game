@@ -7,6 +7,11 @@
 #include "gui/colourlib.hpp" // LIGHT_CORAL, APRICOT, LEMON, etc.
 #include "raylib.h"          // Vector2
 
+namespace
+{
+constexpr std::size_t MAX_NUM_CONFETTI = 400;
+}
+
 class Celebration
 {
 public:
@@ -53,27 +58,17 @@ private:
 
 private:
     /// @brief Spawns a piece of confetti
-    void SpawnConfetti();
+    void Spawn5Confetti();
 
     /// @brief Generates a piece of confetti
     Confetti GenerateConfetti();
 
 private:
     /// @brief the confetti container
-    std::vector<Confetti> confetti_;
+    std::array<Confetti, MAX_NUM_CONFETTI> confetti_;
 
     /// @brief The applause sound effect
     Sound applause_;
-
-    /// @brief The gravity
-    static constexpr float GRAVITY = 200.0;
-
-    /// @brief the maximum pieces of confetti
-    static constexpr std::size_t MAX_NUM_CONFETTI = 400;
-
-    /// @brief the colours of the confetti
-    static constexpr std::array<Color, 6> CONFETTI_COLOURS{LIGHT_CORAL, APRICOT,  LEMON,
-                                                           MINT,        SKY_BLUE, LAVENDER};
 };
 
 #endif // INCLUDE_GUI_CELEBRATIONLIB_H_
