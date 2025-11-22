@@ -1,3 +1,5 @@
+#include <memory> // std::make_unique
+
 #include "raylib.h"
 
 #include "gui/animationlib.hpp"
@@ -86,21 +88,41 @@ void ScreenManager::Update()
         celebrationPtr_->PlayApplauseSound();
         celebrationPtr_->Update();
 
-        // Press enter or left click to change to GAMEPLAY screen
-        if (IsKeyPressed(KEY_ENTER) || IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+        static bool leftClickPressedInState = false;
+
+        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+        {
+            leftClickPressedInState = true;
+        }
+
+        // Press ENTER or left click to change to ENDING screen
+        if (IsKeyPressed(KEY_ENTER) ||
+            (leftClickPressedInState && IsMouseButtonReleased(MOUSE_BUTTON_LEFT)))
         {
             curState_ = GameScreenState::ENDING;
 
             celebrationPtr_->StopApplauseSound();
+
+            leftClickPressedInState = false;
         }
         break;
     }
     case GameScreenState::SAD:
     {
-        // Press enter or left click to change to GAMEPLAY screen
-        if (IsKeyPressed(KEY_ENTER) || IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+        static bool leftClickPressedInState = false;
+
+        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+        {
+            leftClickPressedInState = true;
+        }
+
+        // Press ENTER or left click to change to ENDING screen
+        if (IsKeyPressed(KEY_ENTER) ||
+            (leftClickPressedInState && IsMouseButtonReleased(MOUSE_BUTTON_LEFT)))
         {
             curState_ = GameScreenState::ENDING;
+
+            leftClickPressedInState = false;
         }
         break;
     }
@@ -170,7 +192,9 @@ void ScreenManager::Update()
         break;
     }
     default:
+    {
         break;
+    }
     }
 }
 
