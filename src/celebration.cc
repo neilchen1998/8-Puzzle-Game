@@ -1,13 +1,20 @@
 #include "gui/celebrationlib.hpp"
 
 #include <algorithm> // std::generate
+#include <array>     // std::array
 
-#include "slidr/math/mathlib.hpp" // GetNormalFloatDist, GetUniformIntDist
+#include "slidr/math/mathlib.hpp" // GetNormalFloatDist, GetUniformIntDist, GetUniFloatDist
+
+namespace
+{
+constexpr float GRAVITY = 200.0;
+constexpr std::array<Color, 6> CONFETTI_COLOURS{LIGHT_CORAL, APRICOT,  LEMON,
+                                                MINT,        SKY_BLUE, LAVENDER};
+} // namespace
 
 Celebration::Celebration()
-    : confetti_(MAX_NUM_CONFETTI)
 {
-    // Set all confetti to not active
+    // Generate confetti
     std::generate(confetti_.begin(), confetti_.end(), [this]() { return GenerateConfetti(); });
 
     applause_ = LoadSound("resources/applause.wav");
@@ -35,11 +42,7 @@ void Celebration::StopApplauseSound()
 
 void Celebration::Update()
 {
-    // Generate 5 confetti at a time
-    for (size_t i = 0; i < 5; i++)
-    {
-        SpawnConfetti();
-    }
+    Spawn5Confetti();
 
     // Get the delta time
     float deltaT = GetFrameTime();
@@ -87,29 +90,35 @@ void Celebration::Draw() const
 
 Celebration::Confetti Celebration::GenerateConfetti()
 {
-    return Confetti{// Use designated initializer
-                    .position = {(float)GetRandomValue(0, GetScreenWidth()),
-                                 (float)GetRandomValue(-GetScreenHeight() * 0.25, 0)},
-                    .velocity = {GetNormalFloatDist(0, 100), GetNormalFloatDist(0, 100)},
-                    .size = (float)GetRandomValue(5, 12),
-                    (float)GetRandomValue(8, 20),
-                    .orientation = (float)GetRandomValue(0, 360),
-                    .omega = GetNormalFloatDist(-150, 150),
+    // Use designated initializer
+    const float quarterScreen = 0.2 * GetScreenWidth();
+    return Confetti{.position = {GetUniFloatDist(0, GetScreenWidth()),
+                                 GetUniFloatDist(-quarterScreen, quarterScreen)},
+                    .velocity = {GetNormalFloatDist(10, 50), GetNormalFloatDist(10, 50)},
+                    .size = GetUniFloatDist(5, 12),
+                    GetUniFloatDist(8, 20),
+                    .orientation = GetUniFloatDist(0, 360),
+                    .omega = GetNormalFloatDist(10, 50),
                     .colour = CONFETTI_COLOURS[GetUniformIntDist(0, CONFETTI_COLOURS.size() - 1)],
                     .active = true};
 }
 
-void Celebration::SpawnConfetti()
+void Celebration::Spawn5Confetti()
 {
-    auto itr = confetti_.begin();
-    while (itr != confetti_.end())
+    int cnt = 0;
+    for (auto &c : confetti_)
     {
-        if (!itr->active)
+        // Break if 5 items have been activated
+        if (cnt >= 5)
         {
-            *itr = GenerateConfetti();
             break;
         }
 
-        ++itr;
+        // Check if the current item can be activated
+        if (!c.active)
+        {
+            c = GenerateConfetti();
+            ++cnt;
+        }
     }
 }

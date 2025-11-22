@@ -11,6 +11,13 @@
 
 #include "raylib.h"
 
+namespace
+{
+constexpr std::array<Color, 6> CONFETTI_COLOURS{LIGHT_CORAL, APRICOT,  LEMON,
+                                                MINT,        SKY_BLUE, LAVENDER};
+constexpr int NUM_OF_CONFETTI = 2'000;
+} // namespace
+
 struct Confetti
 {
     /// @brief The x and y position of the confetti
@@ -34,11 +41,6 @@ struct Confetti
     /// @brief True if the confetti is on the screen
     bool active;
 };
-
-static constexpr std::array<Color, 6> CONFETTI_COLOURS{LIGHT_CORAL, APRICOT,  LEMON,
-                                                       MINT,        SKY_BLUE, LAVENDER};
-
-static constexpr int NUM_OF_CONFETTI = 2'000;
 
 class Dummy
 {

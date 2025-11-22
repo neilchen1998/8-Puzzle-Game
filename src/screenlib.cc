@@ -10,10 +10,15 @@
 namespace
 {
 constexpr int buttonFontSize = 40;
-
-constexpr std::string_view titleText = "Welcome to 8 Puzzle";
-constexpr std::string_view restartTxt("Restart");
-constexpr std::string_view newGameTxt("New Game");
+constexpr int buttonPadding = 20;
+constexpr std::string_view greetingTitle{"Welcome to 8 Puzzle"};
+constexpr std::string_view pepTalkTxt{"U can do it next time!"};
+constexpr std::string_view celebrationInstrTxt{"Press ENTER or CLICK to skip"};
+constexpr std::string_view titleInstrTxt{"PRESS ENTER to start"};
+constexpr std::string_view endingInstrTxt{"Select RESTART or NEW GAME"};
+constexpr std::string_view sadInstrTxt{"Press ENTER to skip"};
+constexpr std::string_view restartTxt("RESTART");
+constexpr std::string_view newGameTxt("NEW GAME");
 } // namespace
 
 ScreenManager::ScreenManager()
@@ -27,12 +32,15 @@ ScreenManager::ScreenManager()
     restartTxtWidth_ = MeasureText(restartTxt.data(), buttonFontSize);
     newGameTxtWidth_ = MeasureText(newGameTxt.data(), buttonFontSize);
 
-    float buttonWidth = std::max(restartTxtWidth_, newGameTxtWidth_) + 20;
+    const float buttonWidth = std::max(restartTxtWidth_, newGameTxtWidth_) + buttonPadding;
 
-    restartBox_ = {screenWidth_ / 2 - buttonWidth - 20, static_cast<float>(screenHeight_ / 2 + 40),
-                   buttonWidth, buttonWidth * 2};
-    newGameBox_ = {static_cast<float>(screenWidth_ / 2 + 20), restartBox_.y, buttonWidth,
-                   buttonWidth * 2};
+    const float buttonHeight = 1.6 * buttonWidth;
+
+    restartBox_ = {screenWidth_ / 2 - buttonWidth - buttonPadding,
+                   static_cast<float>((screenHeight_ - buttonHeight) / 2), buttonWidth,
+                   buttonHeight};
+    newGameBox_ = {static_cast<float>(screenWidth_ / 2 + buttonPadding), restartBox_.y, buttonWidth,
+                   buttonHeight};
 }
 
 void ScreenManager::Update()
@@ -212,12 +220,12 @@ void ScreenManager::Draw() const
     {
         DrawRectangle(0, 0, screenWidth_, screenHeight_, JADE_GREEN);
 
-        int titleTextWidth = MeasureText(titleText.data(), 60);
-        DrawText(titleText.data(), (GetScreenWidth() - titleTextWidth) / 2, GetScreenHeight() / 3,
-                 60, BLACK);
+        int titleTextWidth = MeasureText(greetingTitle.data(), 60);
+        DrawText(greetingTitle.data(), (GetScreenWidth() - titleTextWidth) / 2,
+                 GetScreenHeight() / 3, 60, BLACK);
 
-        const int subTxtWidth = MeasureText("PRESS ENTER to start", 20);
-        DrawText("PRESS ENTER to start", (GetScreenWidth() - subTxtWidth) / 2, 220, 20, DARKBLUE);
+        const int subTxtWidth = MeasureText(titleInstrTxt.data(), 20);
+        DrawText(titleInstrTxt.data(), (GetScreenWidth() - subTxtWidth) / 2, 220, 20, DARKBLUE);
 
         break;
     }
@@ -241,9 +249,9 @@ void ScreenManager::Draw() const
     {
         DrawRectangle(0, 0, screenWidth_, screenHeight_, BEIGE);
 
-        const int subTxtWidth = MeasureText("PRESS ENTER to RETURN to TITLE SCREEN", 20);
-        DrawText("PRESS ENTER to RETURN to TITLE SCREEN", (GetScreenWidth() - subTxtWidth) / 2,
-                 220 + 50, 20, DARKBLUE);
+        const int subTxtWidth = MeasureText(celebrationInstrTxt.data(), 20);
+        DrawText(celebrationInstrTxt.data(), (GetScreenWidth() - subTxtWidth) / 2, 220 + 50, 20,
+                 DARKBLUE);
 
         boardPtr_->DrawResult();
         celebrationPtr_->Draw();
@@ -254,13 +262,12 @@ void ScreenManager::Draw() const
     {
         DrawRectangle(0, 0, screenWidth_, screenHeight_, RED);
 
-        const int subTxtWidth = MeasureText("PRESS ENTER to RETURN to END SCREEN", 20);
-        DrawText("PRESS ENTER to RETURN to TITLE SCREEN", (GetScreenWidth() - subTxtWidth) / 2, 220,
-                 20, DARKBLUE);
+        const int subTxtWidth = MeasureText(sadInstrTxt.data(), 20);
+        DrawText(sadInstrTxt.data(), (GetScreenWidth() - subTxtWidth) / 2, 220, 20, DARKBLUE);
 
-        const int mainTxtWidth = MeasureText("PU can do it next time!", 50);
-        DrawText("U can do it next time!", (GetScreenWidth() - mainTxtWidth) / 2,
-                 GetScreenHeight() / 2, 50, DARKBLUE);
+        const int mainTxtWidth = MeasureText(pepTalkTxt.data(), 50);
+        DrawText(pepTalkTxt.data(), (GetScreenWidth() - mainTxtWidth) / 2, GetScreenHeight() / 2,
+                 50, DARKBLUE);
 
         break;
     }
@@ -268,9 +275,8 @@ void ScreenManager::Draw() const
     {
         DrawRectangle(0, 0, screenWidth_, screenHeight_, BLUE);
 
-        const int subTxtWidth = MeasureText("PRESS ENTER to RETURN to TITLE SCREEN", 20);
-        DrawText("PRESS ENTER to RETURN to TITLE SCREEN", (GetScreenWidth() - subTxtWidth) / 2, 220,
-                 20, DARKBLUE);
+        const int subTxtWidth = MeasureText(endingInstrTxt.data(), 20);
+        DrawText(endingInstrTxt.data(), (GetScreenWidth() - subTxtWidth) / 2, 220, 20, DARKBLUE);
 
         // The restart button
         DrawRectangleRounded(restartBox_, gui::cornerRadius, gui::segments,
@@ -291,6 +297,8 @@ void ScreenManager::Draw() const
         break;
     }
     default:
+    {
         break;
+    }
     }
 }
