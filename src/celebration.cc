@@ -20,10 +20,7 @@ Celebration::Celebration()
     fxApplause_ = LoadSound("resources/applause.wav");
 }
 
-Celebration::~Celebration()
-{
-    UnloadSound(fxApplause_);
-}
+Celebration::~Celebration() { UnloadSound(fxApplause_); }
 
 void Celebration::PlayApplauseSound()
 {

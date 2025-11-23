@@ -14,6 +14,15 @@ class Menu
     /// @brief the colours of the button {selected, unselected}
     using BtnColours = std::pair<Color, Color>;
 
+    /// @brief The button struct
+    struct Btn
+    {
+        BtnColours colours;
+        std::string_view txt;
+        Rectangle rec;
+        float txtLen;
+    };
+
 public:
     Menu();
 
@@ -30,9 +39,6 @@ public:
     int GetSelection() const;
 
 private:
-    /// @brief Calculates the width of buttons based on the longest text
-    void CalculateBtnWidth();
-
 private:
     /// @brief The width of the main screen
     int screenWidth_;
@@ -40,14 +46,7 @@ private:
     /// @brief The height of the main screen
     int screenHeight_;
 
-    /// @brief The options in the menu
-    std::array<std::string_view, 3> options_;
-
-    /// @brief The lengths of the options
-    std::array<float, 3> optionLens_;
-
-    // @brief The colours of the buttons
-    std::array<BtnColours, 3> btnColours_;
+    std::array<Btn, 3> btns_;
 
     /// @brief The current selected option index
     unsigned int selectedOption_;
