@@ -17,17 +17,16 @@ constexpr float btnPadding = 10;
 Menu::Menu()
     : screenWidth_(GetScreenWidth()), screenHeight_(GetScreenHeight()), selectedOption_(0)
 {
-    btns_[0] = {std::pair<Color, Color>{TEAL, DARK_GREEN}, "New Game"};
-    btns_[1] = {std::pair<Color, Color>{CORAL, BURNT_SIENNA}, "Settings"};
-    btns_[2] = {std::pair<Color, Color>{LIGHT_GOLD, DARK_SEPIACLITERAL}, "Quit"};
-
-    const unsigned int N = btns_.size();
+    // Initialize the colours and the texts
+    btns_[0] = {{TEAL, DARK_GREEN}, "New Game"};
+    btns_[1] = {{CORAL, BURNT_SIENNA}, "Settings"};
+    btns_[2] = {{LIGHT_GOLD, DARK_SEPIACLITERAL}, "Quit"};
 
     const float btnX = 0.5 * (screenWidth_ - btnWidth);
     float btnY = 0.5 * (screenWidth_ - btnWidth);
 
     // Calculate and construct the rectangles
-    for (size_t i = 0; i < N; ++i, btnY += (btnHeight + btnPadding * 2))
+    for (size_t i = 0; i < btns_.size(); ++i, btnY += (btnHeight + btnPadding * 2))
     {
         // Construct a button
         btns_[i].rec = Rectangle{btnX, btnY, btnWidth, btnHeight};
