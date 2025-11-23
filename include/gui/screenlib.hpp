@@ -1,10 +1,11 @@
 #ifndef INCLUDE_GUI_SCREENLIB_H_
 #define INCLUDE_GUI_SCREENLIB_H_
 
-#include <memory> // std::unique_ptr, std::make_unique
+#include <memory> // std::unique_ptr
 
 #include "gui/animationlib.hpp"
 #include "gui/boardlib.hpp"
+#include "gui/menulib.hpp"  // Menu
 #include "gui/celebrationlib.hpp" // Celebration
 
 /// @brief The states of the game
@@ -12,6 +13,8 @@ enum struct GameScreenState : int
 {
     LOGO = 0,
     TITLE,
+    MENU,
+    SETTINGS,
     GAMEPLAY,
     HELP,
     SAD,
@@ -47,6 +50,9 @@ private:
 
     /// @brief The pointer that points to the Board class
     std::unique_ptr<Board> boardPtr_;
+
+    /// @brief The pointer that points to the Menu class
+    std::unique_ptr<Menu> menuPtr_;
 
     /// @brief The pointer that points to the Celebration class
     std::unique_ptr<Celebration> celebrationPtr_;

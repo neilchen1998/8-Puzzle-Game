@@ -6,6 +6,7 @@
 #include "gui/buttonlib.hpp"
 #include "gui/colourlib.hpp"
 #include "gui/screenlib.hpp"
+#include "gui/menulib.hpp"  // Menu
 
 namespace
 {
@@ -14,11 +15,12 @@ constexpr int buttonPadding = 20;
 constexpr std::string_view greetingTitle{"Welcome to 8 Puzzle"};
 constexpr std::string_view pepTalkTxt{"U can do it next time!"};
 constexpr std::string_view celebrationInstrTxt{"Press ENTER or CLICK to skip"};
-constexpr std::string_view titleInstrTxt{"PRESS ENTER to start"};
+constexpr std::string_view titleInstrTxt{"Press ENTER to start"};
+constexpr std::string_view menuInstrTxt{"Press ARROW UP or ARROW DOWN to select"};
 constexpr std::string_view endingInstrTxt{"Select RESTART or NEW GAME"};
 constexpr std::string_view sadInstrTxt{"Press ENTER to skip"};
-constexpr std::string_view restartTxt("RESTART");
-constexpr std::string_view newGameTxt("NEW GAME");
+constexpr std::string_view restartTxt{"RESTART"};
+constexpr std::string_view newGameTxt{"NEW GAME"};
 } // namespace
 
 ScreenManager::ScreenManager()
@@ -26,6 +28,7 @@ ScreenManager::ScreenManager()
       screenWidth_(GetScreenWidth()),
       screenHeight_(GetScreenHeight()),
       raylibAnimationPtr_(std::make_unique<RaylibAnimation>()),
+      menuPtr_(std::make_unique<Menu>()),
       boardPtr_(std::make_unique<Board>()),
       celebrationPtr_(std::make_unique<Celebration>())
 {
@@ -63,8 +66,18 @@ void ScreenManager::Update()
         // Press enter or left click to change to GAMEPLAY screen
         if (IsKeyPressed(KEY_ENTER) || IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
         {
-            curState_ = GameScreenState::GAMEPLAY;
+            curState_ = GameScreenState::MENU;
         }
+        break;
+    }
+    case GameScreenState::MENU:
+    {
+        menuPtr_->Update();
+        break;
+    }
+    case GameScreenState::SETTINGS:
+    {
+
         break;
     }
     case GameScreenState::GAMEPLAY:
@@ -226,6 +239,21 @@ void ScreenManager::Draw() const
 
         const int subTxtWidth = MeasureText(titleInstrTxt.data(), 20);
         DrawText(titleInstrTxt.data(), (GetScreenWidth() - subTxtWidth) / 2, 220, 20, DARKBLUE);
+
+        break;
+    }
+    case GameScreenState::MENU:
+    {
+        menuPtr_->Draw();
+
+        const int subTxtWidth = MeasureText(menuInstrTxt.data(), 20);
+        DrawText(menuInstrTxt.data(), (GetScreenWidth() - subTxtWidth) / 2, 220, 20, DARKBLUE);
+
+        break;
+    }
+    case GameScreenState::SETTINGS:
+    {
+        // settingPtr_->Draw();
 
         break;
     }
