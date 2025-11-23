@@ -1,10 +1,12 @@
 #include <memory> // std::make_unique
 
+#include "fmt/core.h"
 #include "raylib.h"
 
 #include "gui/animationlib.hpp"
 #include "gui/buttonlib.hpp"
 #include "gui/colourlib.hpp"
+#include "gui/menulib.hpp" // Menu
 #include "gui/screenlib.hpp"
 
 namespace
@@ -14,11 +16,12 @@ constexpr int buttonPadding = 20;
 constexpr std::string_view greetingTitle{"Welcome to 8 Puzzle"};
 constexpr std::string_view pepTalkTxt{"U can do it next time!"};
 constexpr std::string_view celebrationInstrTxt{"Press ENTER or CLICK to skip"};
-constexpr std::string_view titleInstrTxt{"PRESS ENTER to start"};
+constexpr std::string_view titleInstrTxt{"Press ENTER to start"};
+constexpr std::string_view menuInstrTxt{"Press ARROW UP or ARROW DOWN to select"};
 constexpr std::string_view endingInstrTxt{"Select RESTART or NEW GAME"};
 constexpr std::string_view sadInstrTxt{"Press ENTER to skip"};
-constexpr std::string_view restartTxt("RESTART");
-constexpr std::string_view newGameTxt("NEW GAME");
+constexpr std::string_view restartTxt{"RESTART"};
+constexpr std::string_view newGameTxt{"NEW GAME"};
 } // namespace
 
 ScreenManager::ScreenManager()
@@ -26,8 +29,10 @@ ScreenManager::ScreenManager()
       screenWidth_(GetScreenWidth()),
       screenHeight_(GetScreenHeight()),
       raylibAnimationPtr_(std::make_unique<RaylibAnimation>()),
+      menuPtr_(std::make_unique<Menu>()),
       boardPtr_(std::make_unique<Board>()),
-      celebrationPtr_(std::make_unique<Celebration>())
+      celebrationPtr_(std::make_unique<Celebration>()),
+      close_(false)
 {
     restartTxtWidth_ = MeasureText(restartTxt.data(), buttonFontSize);
     newGameTxtWidth_ = MeasureText(newGameTxt.data(), buttonFontSize);
@@ -63,8 +68,30 @@ void ScreenManager::Update()
         // Press enter or left click to change to GAMEPLAY screen
         if (IsKeyPressed(KEY_ENTER) || IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
         {
+            curState_ = GameScreenState::MENU;
+        }
+        break;
+    }
+    case GameScreenState::MENU:
+    {
+        menuPtr_->Update();
+
+        int selection = menuPtr_->GetSelection();
+
+        if (selection == 0)
+        {
             curState_ = GameScreenState::GAMEPLAY;
         }
+        else if (selection == 2)
+        {
+            close_ = true;
+        }
+
+        break;
+    }
+    case GameScreenState::SETTINGS:
+    {
+
         break;
     }
     case GameScreenState::GAMEPLAY:
@@ -139,9 +166,9 @@ void ScreenManager::Update()
         restartBtnAction_ = false;
         newGameBtnAction_ = false;
 
-        const Vector2 mousePoint = GetMousePosition();
+        const Vector2 mousePos = GetMousePosition();
 
-        if (CheckCollisionPointRec(mousePoint, restartBox_))
+        if (CheckCollisionPointRec(mousePos, restartBox_))
         {
             if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
             {
@@ -162,7 +189,7 @@ void ScreenManager::Update()
             restartBtnState_ = gui::ButtonState::Unselected;
         }
 
-        if (CheckCollisionPointRec(mousePoint, newGameBox_))
+        if (CheckCollisionPointRec(mousePos, newGameBox_))
         {
             if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
             {
@@ -226,6 +253,21 @@ void ScreenManager::Draw() const
 
         const int subTxtWidth = MeasureText(titleInstrTxt.data(), 20);
         DrawText(titleInstrTxt.data(), (GetScreenWidth() - subTxtWidth) / 2, 220, 20, DARKBLUE);
+
+        break;
+    }
+    case GameScreenState::MENU:
+    {
+        menuPtr_->Draw();
+
+        const int subTxtWidth = MeasureText(menuInstrTxt.data(), 20);
+        DrawText(menuInstrTxt.data(), (GetScreenWidth() - subTxtWidth) / 2, 220, 20, DARKBLUE);
+
+        break;
+    }
+    case GameScreenState::SETTINGS:
+    {
+        // settingPtr_->Draw();
 
         break;
     }

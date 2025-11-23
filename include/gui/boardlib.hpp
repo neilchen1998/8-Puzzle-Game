@@ -55,9 +55,9 @@ public:
 
 private:
     /// @brief Check which button is pressed
-    /// @param mousePoint The vector of the mouse cursor
+    /// @param mousePos The vector of the mouse cursor
     /// @return The button that is pressed
-    gui::Button CheckWhichButtonIsPressed(const Vector2 &mousePoint);
+    gui::Button CheckWhichButtonIsPressed(const Vector2 &mousePos);
 
     /// @brief Draw the board
     void DrawBoard() const;
