@@ -5,8 +5,8 @@
 #include "gui/animationlib.hpp"
 #include "gui/buttonlib.hpp"
 #include "gui/colourlib.hpp"
+#include "gui/menulib.hpp" // Menu
 #include "gui/screenlib.hpp"
-#include "gui/menulib.hpp"  // Menu
 
 namespace
 {
@@ -74,6 +74,12 @@ void ScreenManager::Update()
     case GameScreenState::MENU:
     {
         menuPtr_->Update();
+
+        if (menuPtr_->GetSelection() == 0)
+        {
+            curState_ = GameScreenState::GAMEPLAY;
+        }
+
         break;
     }
     case GameScreenState::SETTINGS:

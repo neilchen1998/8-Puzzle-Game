@@ -17,26 +17,29 @@ Celebration::Celebration()
     // Generate confetti
     std::generate(confetti_.begin(), confetti_.end(), [this]() { return GenerateConfetti(); });
 
-    applause_ = LoadSound("resources/applause.wav");
+    fxApplause_ = LoadSound("resources/applause.wav");
 }
 
-Celebration::~Celebration() { UnloadSound(applause_); }
+Celebration::~Celebration()
+{
+    UnloadSound(fxApplause_);
+}
 
 void Celebration::PlayApplauseSound()
 {
     // Checks if the sound is NOT playing
-    if (!IsSoundPlaying(applause_))
+    if (!IsSoundPlaying(fxApplause_))
     {
-        PlaySound(applause_);
+        PlaySound(fxApplause_);
     }
 }
 
 void Celebration::StopApplauseSound()
 {
     // Checks if the sound is playing
-    if (IsSoundPlaying(applause_))
+    if (IsSoundPlaying(fxApplause_))
     {
-        StopSound(applause_);
+        StopSound(fxApplause_);
     }
 }
 

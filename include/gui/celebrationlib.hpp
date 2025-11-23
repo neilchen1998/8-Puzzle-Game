@@ -68,7 +68,7 @@ private:
     std::array<Confetti, MAX_NUM_CONFETTI> confetti_;
 
     /// @brief The applause sound effect
-    Sound applause_;
+    Sound fxApplause_;
 };
 
 #endif // INCLUDE_GUI_CELEBRATIONLIB_H_
