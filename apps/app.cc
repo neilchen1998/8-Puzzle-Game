@@ -26,7 +26,7 @@ int main(void)
     // Set desired framerate (frames-per-second)
     SetTargetFPS(TARGET_FPS);
 
-    while (!WindowShouldClose() && !shouldClose) // Detect window close button or ESC key
+    while (!WindowShouldClose() && !shouldClose) // Detect window close button, ESC key, or user's selection
     {
         // Update
         manager.Update();

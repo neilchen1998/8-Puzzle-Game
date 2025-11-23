@@ -85,6 +85,7 @@ private:
     /// @brief The text width of the new game
     float newGameTxtWidth_;
 
+    /// @brief TRUE if the user selects QUIT
     bool close_;
 };
 
