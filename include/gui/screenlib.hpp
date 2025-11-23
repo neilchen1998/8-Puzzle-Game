@@ -7,6 +7,7 @@
 #include "gui/boardlib.hpp"
 #include "gui/celebrationlib.hpp" // Celebration
 #include "gui/menulib.hpp"        // Menu
+#include "gui/settingslib.hpp"        // Settings
 
 /// @brief The states of the game
 enum struct GameScreenState : int
@@ -57,6 +58,9 @@ private:
 
     /// @brief The pointer that points to the Menu class
     std::unique_ptr<Menu> menuPtr_;
+
+    /// @brief The pointer that points to the Settings class
+    std::unique_ptr<Settings> settingsPtr_;
 
     /// @brief The pointer that points to the Celebration class
     std::unique_ptr<Celebration> celebrationPtr_;

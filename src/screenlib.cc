@@ -18,6 +18,7 @@ constexpr std::string_view pepTalkTxt{"U can do it next time!"};
 constexpr std::string_view celebrationInstrTxt{"Press ENTER or CLICK to skip"};
 constexpr std::string_view titleInstrTxt{"Press ENTER to start"};
 constexpr std::string_view menuInstrTxt{"Press ARROW UP or ARROW DOWN to select"};
+constexpr std::string_view settingsInstrTxt{"Click and change the settings"};
 constexpr std::string_view endingInstrTxt{"Select RESTART or NEW GAME"};
 constexpr std::string_view sadInstrTxt{"Press ENTER to skip"};
 constexpr std::string_view restartTxt{"RESTART"};
@@ -82,6 +83,10 @@ void ScreenManager::Update()
         {
             curState_ = GameScreenState::GAMEPLAY;
         }
+        else if (selection == 1)
+        {
+            curState_ = GameScreenState::SETTINGS;
+        }
         else if (selection == 2)
         {
             close_ = true;
@@ -91,7 +96,7 @@ void ScreenManager::Update()
     }
     case GameScreenState::SETTINGS:
     {
-
+        settingsPtr_->Update();
         break;
     }
     case GameScreenState::GAMEPLAY:
@@ -267,7 +272,10 @@ void ScreenManager::Draw() const
     }
     case GameScreenState::SETTINGS:
     {
-        // settingPtr_->Draw();
+        settingsPtr_->Draw();
+
+        const int subTxtWidth = MeasureText(settingsInstrTxt.data(), 20);
+        DrawText(settingsInstrTxt.data(), (GetScreenWidth() - subTxtWidth) / 2, 220, 20, DARKBLUE);
 
         break;
     }
