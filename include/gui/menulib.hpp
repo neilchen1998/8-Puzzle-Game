@@ -34,11 +34,10 @@ public:
     /// @brief Draws the animation on the screen according to the current state
     void Draw() const;
 
-    /// @brief
-    /// @return The selected option, -1 if the user has not pressed ENTER
-    int GetSelection() const;
+    /// @brief Get the selection from the user
+    /// @return The selection from the user, INT_MAX if the user has not pressed ENTER
+    int GetSelection();
 
-private:
 private:
     /// @brief The width of the main screen
     int screenWidth_;
@@ -49,13 +48,16 @@ private:
     std::array<Btn, 3> btns_;
 
     /// @brief The current selected option index
-    unsigned int selectedOption_;
+    int selectedOption_;
 
     /// @brief The sound effect for moving between buttons
     Sound fxMenuMove_;
 
     /// @brief The sound effect for selecting a button
     Sound fxMenuSelect_;
+
+    /// @brief The action flag
+    bool action_;
 };
 
 #endif // INCLUDE_GUI_MENULIB_H_

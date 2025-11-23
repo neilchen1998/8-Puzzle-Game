@@ -1,5 +1,6 @@
 #include <utility> // std::pair
 
+#include "fmt/core.h"
 #include "raylib.h"
 
 #include "gui/colourlib.hpp"
@@ -15,7 +16,10 @@ constexpr float btnPadding = 10;
 } // namespace
 
 Menu::Menu()
-    : screenWidth_(GetScreenWidth()), screenHeight_(GetScreenHeight()), selectedOption_(0)
+    : screenWidth_(GetScreenWidth()),
+      screenHeight_(GetScreenHeight()),
+      selectedOption_(0),
+      action_(false)
 {
     // Initialize the colours and the texts
     btns_[0] = {{TEAL, DARK_GREEN}, "New Game"};
@@ -50,7 +54,10 @@ void Menu::Update()
 {
     const unsigned int N = btns_.size();
     static unsigned int curSelection = selectedOption_;
+    static bool leftClickPressedInState = false;
     static Vector2 prevMousePos = GetMousePosition();
+
+    const Vector2 mousePos = GetMousePosition();
 
     // Detect key actions first then check if the mouse moves to a new position
     if (IsKeyPressed(KEY_UP))
@@ -61,7 +68,7 @@ void Menu::Update()
     {
         curSelection = (selectedOption_ + 1 + N) % N;
     }
-    else if (const Vector2 mousePos = GetMousePosition(); (mousePos.x != prevMousePos.x) || (mousePos.y != prevMousePos.y))
+    else if ((mousePos.x != prevMousePos.x) || (mousePos.y != prevMousePos.y))
     {
         // Check if the cursor is over a button
         for (size_t i = 0; i < N; i++)
@@ -84,6 +91,26 @@ void Menu::Update()
         selectedOption_ = curSelection;
 
         PlaySound(fxMenuMove_);
+    }
+
+    // Check if the user click a button
+    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) &&
+        CheckCollisionPointRec(mousePos, btns_[selectedOption_].rec))
+    {
+        leftClickPressedInState = true;
+    }
+
+    // Check for user's input
+    // (i) the user presses ENTER
+    // (ii) the user clicks on the button
+    if (IsKeyPressed(KEY_ENTER) ||
+        (leftClickPressedInState && CheckCollisionPointRec(mousePos, btns_[selectedOption_].rec) &&
+         IsMouseButtonReleased(MOUSE_BUTTON_LEFT)))
+    {
+        PlaySound(fxMenuSelect_);
+
+        leftClickPressedInState = false;
+        action_ = true;
     }
 }
 
@@ -109,30 +136,13 @@ void Menu::Draw() const
     }
 }
 
-int Menu::GetSelection() const
+int Menu::GetSelection()
 {
-    static bool leftClickPressedInState = false;
-
-    // Check if the user click a button
-    const Vector2 mousePos = GetMousePosition();
-    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) &&
-        CheckCollisionPointRec(mousePos, btns_[selectedOption_].rec))
+    if (!action_)
     {
-        leftClickPressedInState = true;
+        return INT_MAX;
     }
 
-    // Check for user's input
-    // (i) the user presses ENTER
-    // (ii) the user clicks on the button
-    if (IsKeyPressed(KEY_ENTER) ||
-        (leftClickPressedInState && IsMouseButtonReleased(MOUSE_BUTTON_LEFT) &&
-         CheckCollisionPointRec(mousePos, btns_[selectedOption_].rec)))
-    {
-        PlaySound(fxMenuSelect_);
-
-        leftClickPressedInState = false;
-        return selectedOption_;
-    }
-
-    return -1;
+    action_ = false;
+    return selectedOption_;
 }

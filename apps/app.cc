@@ -1,5 +1,4 @@
 #include <chrono>     // std::chrono::high_resolution_clock, std::chrono::duration_cast
-#include <fmt/core.h> // fmt::print
 #include <stdlib.h>   // EXIT_SUCCESS, EXIT_FAILURE
 #include <vector>     // std::vector
 
@@ -14,6 +13,7 @@ int main(void)
 {
     const int screenWidth = 1200;
     const int screenHeight = 1200;
+    bool shouldClose = false;
 
     InitWindow(screenWidth, screenHeight, "8 Puzzle Game");
 
@@ -26,10 +26,12 @@ int main(void)
     // Set desired framerate (frames-per-second)
     SetTargetFPS(TARGET_FPS);
 
-    while (!WindowShouldClose()) // Detect window close button or ESC key
+    while (!WindowShouldClose() && !shouldClose) // Detect window close button or ESC key
     {
         // Update
         manager.Update();
+
+        shouldClose = manager.GetShouldClose();
 
         // Draw
         BeginDrawing();

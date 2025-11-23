@@ -1,5 +1,6 @@
 #include <memory> // std::make_unique
 
+#include "fmt/core.h"
 #include "raylib.h"
 
 #include "gui/animationlib.hpp"
@@ -30,7 +31,8 @@ ScreenManager::ScreenManager()
       raylibAnimationPtr_(std::make_unique<RaylibAnimation>()),
       menuPtr_(std::make_unique<Menu>()),
       boardPtr_(std::make_unique<Board>()),
-      celebrationPtr_(std::make_unique<Celebration>())
+      celebrationPtr_(std::make_unique<Celebration>()),
+      close_(false)
 {
     restartTxtWidth_ = MeasureText(restartTxt.data(), buttonFontSize);
     newGameTxtWidth_ = MeasureText(newGameTxt.data(), buttonFontSize);
@@ -55,8 +57,7 @@ void ScreenManager::Update()
         raylibAnimationPtr_->Update();
 
         // Wait for the intro before jumping to TITLE screen
-        // if (raylibAnimationPtr_->IsDone())
-        if (true)
+        if (raylibAnimationPtr_->IsDone())
         {
             curState_ = GameScreenState::TITLE;
         }
@@ -75,9 +76,15 @@ void ScreenManager::Update()
     {
         menuPtr_->Update();
 
-        if (menuPtr_->GetSelection() == 0)
+        int selection = menuPtr_->GetSelection();
+
+        if (selection == 0)
         {
             curState_ = GameScreenState::GAMEPLAY;
+        }
+        else if (selection == 2)
+        {
+            close_ = true;
         }
 
         break;

@@ -35,6 +35,8 @@ public:
     /// @brief Draw the the state on the screen
     void Draw() const;
 
+    inline bool GetShouldClose() const { return close_; }
+
 private:
     /// @brief The current state of the game
     GameScreenState curState_;
@@ -80,6 +82,8 @@ private:
 
     /// @brief The text width of the new game
     float newGameTxtWidth_;
+
+    bool close_;
 };
 
 #endif // INCLUDE_GUI_SCREENLIB_H_
