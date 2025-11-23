@@ -31,7 +31,7 @@ int main(void)
         // Update
         manager.Update();
 
-        shouldClose = manager.GetShouldClose();
+        shouldClose = manager.GetWindowShouldBeClosed();
 
         // Draw
         BeginDrawing();

@@ -35,7 +35,9 @@ public:
     /// @brief Draw the the state on the screen
     void Draw() const;
 
-    inline bool GetShouldClose() const { return close_; }
+    /// @brief Checks if the window should be closed
+    /// @return TRUE if the window should be closed
+    inline bool GetWindowShouldBeClosed() const { return close_; }
 
 private:
     /// @brief The current state of the game
