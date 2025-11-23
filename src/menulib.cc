@@ -49,16 +49,39 @@ Menu::~Menu()
 void Menu::Update()
 {
     const unsigned int N = btns_.size();
+    static unsigned int curSelection = selectedOption_;
+    static Vector2 prevMousePos = GetMousePosition();
 
+    // Detect key actions first then check if the mouse moves to a new position
     if (IsKeyPressed(KEY_UP))
     {
-        selectedOption_ = (--selectedOption_ + N) % N;
-
-        PlaySound(fxMenuMove_);
+        curSelection = (selectedOption_ - 1 + N) % N;
     }
     else if (IsKeyPressed(KEY_DOWN))
     {
-        selectedOption_ = (++selectedOption_ + N) % N;
+        curSelection = (selectedOption_ + 1 + N) % N;
+    }
+    else if (const Vector2 mousePos = GetMousePosition(); (mousePos.x != prevMousePos.x) || (mousePos.y != prevMousePos.y))
+    {
+        // Check if the cursor is over a button
+        for (size_t i = 0; i < N; i++)
+        {
+            if (CheckCollisionPointRec(mousePos, btns_[i].rec))
+            {
+                curSelection = i;
+
+                break;
+            }
+        }
+
+        // Update the mouse position
+        prevMousePos = mousePos;
+    }
+
+    // Check if another button is selected, if so then play the music
+    if (curSelection != selectedOption_)
+    {
+        selectedOption_ = curSelection;
 
         PlaySound(fxMenuMove_);
     }
@@ -88,10 +111,26 @@ void Menu::Draw() const
 
 int Menu::GetSelection() const
 {
-    if (IsKeyPressed(KEY_ENTER))
+    static bool leftClickPressedInState = false;
+
+    // Check if the user click a button
+    const Vector2 mousePos = GetMousePosition();
+    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) &&
+        CheckCollisionPointRec(mousePos, btns_[selectedOption_].rec))
+    {
+        leftClickPressedInState = true;
+    }
+
+    // Check for user's input
+    // (i) the user presses ENTER
+    // (ii) the user clicks on the button
+    if (IsKeyPressed(KEY_ENTER) ||
+        (leftClickPressedInState && IsMouseButtonReleased(MOUSE_BUTTON_LEFT) &&
+         CheckCollisionPointRec(mousePos, btns_[selectedOption_].rec)))
     {
         PlaySound(fxMenuSelect_);
 
+        leftClickPressedInState = false;
         return selectedOption_;
     }
 

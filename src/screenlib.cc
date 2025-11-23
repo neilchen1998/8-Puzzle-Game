@@ -159,9 +159,9 @@ void ScreenManager::Update()
         restartBtnAction_ = false;
         newGameBtnAction_ = false;
 
-        const Vector2 mousePoint = GetMousePosition();
+        const Vector2 mousePos = GetMousePosition();
 
-        if (CheckCollisionPointRec(mousePoint, restartBox_))
+        if (CheckCollisionPointRec(mousePos, restartBox_))
         {
             if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
             {
@@ -182,7 +182,7 @@ void ScreenManager::Update()
             restartBtnState_ = gui::ButtonState::Unselected;
         }
 
-        if (CheckCollisionPointRec(mousePoint, newGameBox_))
+        if (CheckCollisionPointRec(mousePos, newGameBox_))
         {
             if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
             {

@@ -87,15 +87,15 @@ Board::~Board()
 
 void Board::Update()
 {
-    const Vector2 mousePoint = GetMousePosition();
-    gui::Button btn = CheckWhichButtonIsPressed(mousePoint);
+    const Vector2 mousePos = GetMousePosition();
+    gui::Button btn = CheckWhichButtonIsPressed(mousePos);
 
     restartBtnAction_ = false;
     undoBtnAction_ = false;
     helpBtnAction_ = false;
 
     // Check if the restart button is hovered or pressed
-    if (CheckCollisionPointRec(mousePoint,
+    if (CheckCollisionPointRec(mousePos,
                                buttonPositions_[std::to_underlying(gui::Button::Restart)]))
     {
         if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
@@ -118,7 +118,7 @@ void Board::Update()
     }
 
     // Check if the undo button is hovered or pressed
-    if (CheckCollisionPointRec(mousePoint, buttonPositions_[std::to_underlying(gui::Button::Undo)]))
+    if (CheckCollisionPointRec(mousePos, buttonPositions_[std::to_underlying(gui::Button::Undo)]))
     {
         if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
         {
@@ -139,7 +139,7 @@ void Board::Update()
     }
 
     // Check if the help butoon is hovered or pressed
-    if (CheckCollisionPointRec(mousePoint, buttonPositions_[std::to_underlying(gui::Button::Help)]))
+    if (CheckCollisionPointRec(mousePos, buttonPositions_[std::to_underlying(gui::Button::Help)]))
     {
         if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
         {
@@ -443,12 +443,12 @@ void Board::Restart()
     }
 }
 
-gui::Button Board::CheckWhichButtonIsPressed(const Vector2 &mousePoint)
+gui::Button Board::CheckWhichButtonIsPressed(const Vector2 &mousePos)
 {
     // Loop through all pieces on the board
     for (size_t i = 0; i <= std::to_underlying(gui::Button::NinthPiece); i++)
     {
-        if (CheckCollisionPointRec(mousePoint, buttonPositions_[i]))
+        if (CheckCollisionPointRec(mousePos, buttonPositions_[i]))
         {
             return (gui::Button)i;
         }
