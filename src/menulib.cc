@@ -6,8 +6,8 @@
 namespace
 {
     constexpr int btnFontSize = 35;
-    constexpr int buttonWidth = 250;
-    constexpr int buttonHeight = 60;
+    constexpr int btnWidth = 250;
+    constexpr int btnHeight = 60;
     constexpr float btnY = 350;
     constexpr float btnPadding = 10;
 }
@@ -15,8 +15,7 @@ namespace
 Menu::Menu()
     : screenWidth_(GetScreenWidth()),
     screenHeight_(GetScreenHeight()),
-    selectedOption_(0),
-    btnWidth_(buttonWidth)
+    selectedOption_(0)
 {
     options_ = {"New Game", "Settings", "Quit"};
 
@@ -46,12 +45,13 @@ void Menu::Draw() const
 {
     const unsigned int N = options_.size();
 
-    const float btnX = 0.5 * (screenWidth_ - btnWidth_);
+    const float btnX = 0.5 * (screenWidth_ - btnWidth);
+    float btnY = 0.5 * (screenWidth_ - btnWidth);
 
-    for (size_t i = 0; i < N; ++i, btnY += (buttonHeight + btnPadding * 2))
+    for (size_t i = 0; i < N; ++i, btnY += (btnHeight + btnPadding * 2))
     {
         Color btnColour = (i == selectedOption_) ? CRIMSON : LIGHT_CORAL;
-        Rectangle btn{btnX, btnY, btnWidth_, buttonHeight};
+        Rectangle btn{btnX, btnY, btnWidth, btnHeight};
 
         DrawRectangle(btn.x, btn.y, btn.width, btn.height, btnColour);
         DrawText(TextFormat(options_[i].data()), 0.5 * (screenWidth_ - optionLens_[i]) - btnPadding, btnY + btnPadding, btnFontSize, WHITE);

@@ -46,9 +46,6 @@ private:
 
     /// @brief The current selected option index
     unsigned int selectedOption_;
-
-    /// @brief The width of the buttons
-    float btnWidth_;
 };
 
 #endif // INCLUDE_GUI_MENULIB_H_
