@@ -1,7 +1,7 @@
-#include <utility> // std::pair
-
 #include "fmt/core.h"
 #include "raylib.h"
+#define RAYGUI_IMPLEMENTATION
+#include "gui/raygui.h"
 
 #include "gui/colourlib.hpp"
 #include "gui/settingslib.hpp"
@@ -17,7 +17,8 @@ constexpr float btnPadding = 10;
 
 Settings::Settings()
     : screenWidth_(GetScreenWidth()),
-      screenHeight_(GetScreenHeight())
+      screenHeight_(GetScreenHeight()),
+      volume_(25.0f)
 {
     // Load sound effects
     // fxMenuMove_ = LoadSound("resources/switch-menu.mp3");
@@ -36,7 +37,9 @@ void Settings::Update()
 
 }
 
-void Settings::Draw() const
+void Settings::Draw()
 {
-
+    GuiLabel((Rectangle){ 12, 62, 140, 24 }, TextFormat("Volume: %i %", (int)volume_));
+    GuiSliderBar((Rectangle){ 12, 60 + 24, 140, 16 }, NULL, NULL, &volume_, 0.0f, 100.0f);
+    SetMasterVolume(volume_);
 }

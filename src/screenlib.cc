@@ -8,6 +8,7 @@
 #include "gui/colourlib.hpp"
 #include "gui/menulib.hpp" // Menu
 #include "gui/screenlib.hpp"
+#include "gui/settingslib.hpp"
 
 namespace
 {
@@ -31,6 +32,7 @@ ScreenManager::ScreenManager()
       screenHeight_(GetScreenHeight()),
       raylibAnimationPtr_(std::make_unique<RaylibAnimation>()),
       menuPtr_(std::make_unique<Menu>()),
+      settingsPtr_(std::make_unique<Settings>()),
       boardPtr_(std::make_unique<Board>()),
       celebrationPtr_(std::make_unique<Celebration>()),
       close_(false)
