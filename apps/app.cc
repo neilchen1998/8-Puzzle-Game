@@ -1,6 +1,6 @@
-#include <chrono>     // std::chrono::high_resolution_clock, std::chrono::duration_cast
-#include <stdlib.h>   // EXIT_SUCCESS, EXIT_FAILURE
-#include <vector>     // std::vector
+#include <chrono>   // std::chrono::high_resolution_clock, std::chrono::duration_cast
+#include <stdlib.h> // EXIT_SUCCESS, EXIT_FAILURE
+#include <vector>   // std::vector
 
 #include "fmt/core.h"
 #include "raylib.h" // InitWindow, SetTargetFPS,
@@ -26,7 +26,8 @@ int main(void)
     // Set desired framerate (frames-per-second)
     SetTargetFPS(TARGET_FPS);
 
-    while (!WindowShouldClose() && !shouldClose) // Detect window close button, ESC key, or user's selection
+    while (!WindowShouldClose() &&
+           !shouldClose) // Detect window close button, ESC key, or user's selection
     {
         // Update
         manager.Update();

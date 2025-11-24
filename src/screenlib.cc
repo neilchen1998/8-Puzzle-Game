@@ -8,6 +8,7 @@
 #include "gui/colourlib.hpp"
 #include "gui/menulib.hpp" // Menu
 #include "gui/screenlib.hpp"
+#include "gui/settingslib.hpp"
 
 namespace
 {
@@ -18,6 +19,7 @@ constexpr std::string_view pepTalkTxt{"U can do it next time!"};
 constexpr std::string_view celebrationInstrTxt{"Press ENTER or CLICK to skip"};
 constexpr std::string_view titleInstrTxt{"Press ENTER to start"};
 constexpr std::string_view menuInstrTxt{"Press ARROW UP or ARROW DOWN to select"};
+constexpr std::string_view settingsInstrTxt{"Click and change the settings"};
 constexpr std::string_view endingInstrTxt{"Select RESTART or NEW GAME"};
 constexpr std::string_view sadInstrTxt{"Press ENTER to skip"};
 constexpr std::string_view restartTxt{"RESTART"};
@@ -30,6 +32,7 @@ ScreenManager::ScreenManager()
       screenHeight_(GetScreenHeight()),
       raylibAnimationPtr_(std::make_unique<RaylibAnimation>()),
       menuPtr_(std::make_unique<Menu>()),
+      settingsPtr_(std::make_unique<Settings>()),
       boardPtr_(std::make_unique<Board>()),
       celebrationPtr_(std::make_unique<Celebration>()),
       close_(false)
@@ -42,10 +45,8 @@ ScreenManager::ScreenManager()
     const float buttonHeight = 1.6 * buttonWidth;
 
     restartBox_ = {screenWidth_ / 2 - buttonWidth - buttonPadding,
-                   static_cast<float>((screenHeight_ - buttonHeight) / 2), buttonWidth,
-                   buttonHeight};
-    newGameBox_ = {static_cast<float>(screenWidth_ / 2 + buttonPadding), restartBox_.y, buttonWidth,
-                   buttonHeight};
+                   0.5f * (screenHeight_ - buttonHeight), buttonWidth, buttonHeight};
+    newGameBox_ = {0.5f * screenWidth_ + buttonPadding, restartBox_.y, buttonWidth, buttonHeight};
 }
 
 void ScreenManager::Update()
@@ -82,6 +83,10 @@ void ScreenManager::Update()
         {
             curState_ = GameScreenState::GAMEPLAY;
         }
+        else if (selection == 1)
+        {
+            curState_ = GameScreenState::SETTINGS;
+        }
         else if (selection == 2)
         {
             close_ = true;
@@ -91,6 +96,14 @@ void ScreenManager::Update()
     }
     case GameScreenState::SETTINGS:
     {
+        settingsPtr_->Update();
+
+        bool exitToMenu = settingsPtr_->Exit();
+
+        if (exitToMenu)
+        {
+            curState_ = GameScreenState::MENU;
+        }
 
         break;
     }
@@ -267,7 +280,10 @@ void ScreenManager::Draw() const
     }
     case GameScreenState::SETTINGS:
     {
-        // settingPtr_->Draw();
+        settingsPtr_->Draw();
+
+        const int subTxtWidth = MeasureText(settingsInstrTxt.data(), 20);
+        DrawText(settingsInstrTxt.data(), (GetScreenWidth() - subTxtWidth) / 2, 220, 20, DARKBLUE);
 
         break;
     }

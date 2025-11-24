@@ -21,7 +21,7 @@ FetchContent_MakeAvailable(slidr)
 
 file(GLOB GUI_HEADER_LIST CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/include/gui/*.hpp")
 
-add_library(gui_library screenlib.cc animationlib.cc boardlib.cc celebration.cc menulib.cc ${GUI_HEADER_LIST})
+add_library(gui_library screenlib.cc animationlib.cc boardlib.cc celebration.cc menulib.cc settingslib.cc ${GUI_HEADER_LIST})
 
 apply_compiler_flags(gui_library)
 

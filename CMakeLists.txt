@@ -55,6 +55,8 @@ function(apply_compiler_flags target_name)
         add_compile_options(-Wall -Wextra -pedantic -g3 -fsanitize=address,undefined)
     endif()
 
+    message(STATUS "Build type is ${CMAKE_BUILD_TYPE}")
+
     # linker flags
     if(CMAKE_BUILD_TYPE STREQUAL "Debug")
         add_link_options(-g3 -fsanitize=address,undefined)
