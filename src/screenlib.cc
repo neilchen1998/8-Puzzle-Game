@@ -45,10 +45,8 @@ ScreenManager::ScreenManager()
     const float buttonHeight = 1.6 * buttonWidth;
 
     restartBox_ = {screenWidth_ / 2 - buttonWidth - buttonPadding,
-                   static_cast<float>((screenHeight_ - buttonHeight) / 2), buttonWidth,
-                   buttonHeight};
-    newGameBox_ = {static_cast<float>(screenWidth_ / 2 + buttonPadding), restartBox_.y, buttonWidth,
-                   buttonHeight};
+                   0.5f * (screenHeight_ - buttonHeight), buttonWidth, buttonHeight};
+    newGameBox_ = {0.5f * screenWidth_ + buttonPadding, restartBox_.y, buttonWidth, buttonHeight};
 }
 
 void ScreenManager::Update()
@@ -99,6 +97,14 @@ void ScreenManager::Update()
     case GameScreenState::SETTINGS:
     {
         settingsPtr_->Update();
+
+        bool exitToMenu = settingsPtr_->Exit();
+
+        if (exitToMenu)
+        {
+            curState_ = GameScreenState::MENU;
+        }
+
         break;
     }
     case GameScreenState::GAMEPLAY:

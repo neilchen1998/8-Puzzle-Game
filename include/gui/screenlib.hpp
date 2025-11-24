@@ -7,7 +7,7 @@
 #include "gui/boardlib.hpp"
 #include "gui/celebrationlib.hpp" // Celebration
 #include "gui/menulib.hpp"        // Menu
-#include "gui/settingslib.hpp"        // Settings
+#include "gui/settingslib.hpp"    // Settings
 
 /// @brief The states of the game
 enum struct GameScreenState : int
