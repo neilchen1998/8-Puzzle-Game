@@ -3,7 +3,7 @@
 #include "fmt/core.h"
 #include "raylib.h"
 #define RAYGUI_IMPLEMENTATION
-#include "gui/raygui.h"
+#include "raygui.h"
 
 #include "gui/colourlib.hpp"
 #include "gui/settingslib.hpp"
@@ -17,6 +17,9 @@ constexpr float btnY = 350;
 constexpr float btnPadding = 10;
 constexpr float volumeSliderLen = 140;
 const std::string_view exitBtnTxt{"Back to MENU"};
+const Rectangle backgroundCheckboxTxtRec { 50, btnY, btnFont, btnFont };
+const char *checkboxText = "Background music: OFF";
+const char *sliderTxt = "Main volume: ";
 } // namespace
 
 Settings::Settings()
@@ -27,15 +30,20 @@ Settings::Settings()
       exitBtnState_(gui::ButtonState::Unselected),
       exitBtnWidth_(MeasureText(exitBtnTxt.data(), btnFont)),
       exitBtnRec_(
-          {0.5f * (screenWidth_ - exitBtnWidth_), 600, exitBtnWidth_ + 2 * btnPadding, btnHeight}),
+          {0.5f * (screenWidth_ - exitBtnWidth_), 800, exitBtnWidth_ + 2 * btnPadding, btnHeight}),
       btnColours_({JADE_GREEN, DARK_GREEN, TEAL}),
       volumeLabelRec_(
-          {0.5f * (screenWidth_ - volumeSliderLen), 0.5f * screenHeight_ - 100, 60, 24}),
-      volumeSliderBarRec_({volumeLabelRec_.x, 0.5f * screenHeight_ - 100 + 24, volumeSliderLen, 16})
+          {0.5f * (screenWidth_) - 150, 0.5f * screenHeight_ - 100, 60, 24}),
+      volumeSliderBarRec_({volumeLabelRec_.x, 0.5f * screenHeight_ - 100 + 24, volumeSliderLen, 16}),
+      fxBackgroundEnabled_(true)
 {
     // Load sound effects
     fxMove_ = LoadSound("resources/switch-menu.mp3");
     fxSelect_ = LoadSound("resources/click-menu.mp3");
+
+    // Measure the length of the texts
+    backgroundMusicTxtLen_ = MeasureText(checkboxText, btnFont);
+    mainVolumeTxtLen_ = MeasureText(sliderTxt, btnFont);
 }
 
 Settings::~Settings()
@@ -75,11 +83,14 @@ void Settings::Update()
 
     if (exitBtnState_ != prevState)
     {
-        PlaySound(fxMove_);
+        if (fxBackgroundEnabled_)
+        {
+            PlaySound(fxSelect_);
+        }
         prevState = exitBtnState_;
     }
 
-    if (CheckCollisionPointRec(mousePos, volumeSliderBarRec_) &&
+    if (fxBackgroundEnabled_ && CheckCollisionPointRec(mousePos, volumeSliderBarRec_) &&
         (IsMouseButtonDown(MOUSE_BUTTON_LEFT) || IsMouseButtonReleased(MOUSE_BUTTON_LEFT)))
     {
         PlaySound(fxMove_);
@@ -88,7 +99,10 @@ void Settings::Update()
     // Check if action is valid
     if (exitAct)
     {
-        PlaySound(fxSelect_);
+        if (fxBackgroundEnabled_)
+        {
+            PlaySound(fxSelect_);
+        }
         exit_ = true;
         exitAct = false;
     }
@@ -99,14 +113,25 @@ void Settings::Update()
 
 void Settings::Draw()
 {
+    float anchorY = volumeSliderBarRec_.y;
+
     // Draw the volume slider
-    GuiLabel(volumeLabelRec_, TextFormat("Volume: %i %", (int)volume_));
-    GuiSliderBar(volumeSliderBarRec_, NULL, NULL, &volume_, 0.0f, 100.0f);
+    GuiLabel({volumeLabelRec_.x + mainVolumeTxtLen_, (anchorY - volumeSliderBarRec_.height), volumeLabelRec_.width, volumeLabelRec_.height}, TextFormat("Volume: %i %", (int)volume_));
+    GuiSliderBar({volumeLabelRec_.x + mainVolumeTxtLen_, (anchorY + 0.75f * volumeSliderBarRec_.height), volumeSliderBarRec_.width, volumeSliderBarRec_.height}, NULL, NULL, &volume_, 0.0f, 100.0f);
+    DrawText("Main volume: ", volumeLabelRec_.x, anchorY, btnFont, BLACK);
+
+    anchorY += 50.0f;
+
+    // Draw the checkbox and its text description
+    GuiCheckBox(Rectangle{volumeLabelRec_.x + backgroundMusicTxtLen_ + 10, anchorY, backgroundCheckboxTxtRec.width, backgroundCheckboxTxtRec.height}, NULL, &fxBackgroundEnabled_);
+    DrawText(TextFormat("Background music: %s", (fxBackgroundEnabled_) ? "ON" : "OFF"), volumeLabelRec_.x, anchorY, btnFont, BLACK);
+
+    anchorY += 50.0f;
 
     // Draw the exit button
-    DrawRectangle(exitBtnRec_.x, exitBtnRec_.y, exitBtnRec_.width, exitBtnRec_.height,
+    DrawRectangle(exitBtnRec_.x, anchorY, exitBtnRec_.width, exitBtnRec_.height,
                   btnColours_[static_cast<int>(exitBtnState_)]);
-    DrawText(exitBtnTxt.data(), exitBtnRec_.x + btnPadding, exitBtnRec_.y + btnPadding, btnFont,
+    DrawText(exitBtnTxt.data(), exitBtnRec_.x + btnPadding, anchorY + btnPadding, btnFont,
              WHITE);
 }
 

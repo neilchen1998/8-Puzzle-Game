@@ -60,6 +60,15 @@ private:
 
     /// @brief The sound effect for selecting
     Sound fxSelect_;
+
+    /// @brief The background sound effect enabled
+    bool fxBackgroundEnabled_;
+
+    /// @brief The text length of the background music description
+    float backgroundMusicTxtLen_;
+
+    /// @brief The text length of the main volume description
+    float mainVolumeTxtLen_;
 };
 
 #endif // INCLUDE_GUI_SETTINGSLIB_H_
