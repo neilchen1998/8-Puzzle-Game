@@ -58,7 +58,7 @@ void ScreenManager::Update()
         raylibAnimationPtr_->Update();
 
         // Wait for the intro before jumping to TITLE screen
-        if (true)
+        if (raylibAnimationPtr_->IsDone())
         {
             curState_ = GameScreenState::TITLE;
         }
