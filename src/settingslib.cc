@@ -30,7 +30,7 @@ Settings::Settings()
       exitBtnState_(gui::ButtonState::Unselected),
       exitBtnWidth_(MeasureText(exitBtnTxt.data(), btnFont)),
       exitBtnRec_(
-          {0.5f * (screenWidth_ - exitBtnWidth_), 600, exitBtnWidth_ + 2 * btnPadding, btnHeight}),
+          {0.5f * (screenWidth_ - exitBtnWidth_), 800, exitBtnWidth_ + 2 * btnPadding, btnHeight}),
       btnColours_({JADE_GREEN, DARK_GREEN, TEAL}),
       volumeLabelRec_(
           {0.5f * (screenWidth_) - 150, 0.5f * screenHeight_ - 100, 60, 24}),
@@ -113,11 +113,11 @@ void Settings::Update()
 
 void Settings::Draw()
 {
-    float anchorY = volumeLabelRec_.y;
+    float anchorY = volumeSliderBarRec_.y;
 
     // Draw the volume slider
-    GuiLabel({volumeLabelRec_.x + mainVolumeTxtLen_, volumeLabelRec_.y, volumeLabelRec_.width, volumeLabelRec_.height}, TextFormat("Volume: %i %", (int)volume_));
-    GuiSliderBar({volumeSliderBarRec_.x + mainVolumeTxtLen_, volumeSliderBarRec_.y, volumeSliderBarRec_.width, volumeSliderBarRec_.height}, NULL, NULL, &volume_, 0.0f, 100.0f);
+    GuiLabel({volumeLabelRec_.x + mainVolumeTxtLen_, (anchorY - volumeSliderBarRec_.height), volumeLabelRec_.width, volumeLabelRec_.height}, TextFormat("Volume: %i %", (int)volume_));
+    GuiSliderBar({volumeLabelRec_.x + mainVolumeTxtLen_, (anchorY + 0.75f * volumeSliderBarRec_.height), volumeSliderBarRec_.width, volumeSliderBarRec_.height}, NULL, NULL, &volume_, 0.0f, 100.0f);
     DrawText("Main volume: ", volumeLabelRec_.x, anchorY, btnFont, BLACK);
 
     anchorY += 50.0f;
@@ -126,10 +126,12 @@ void Settings::Draw()
     GuiCheckBox(Rectangle{volumeLabelRec_.x + backgroundMusicTxtLen_ + 10, anchorY, backgroundCheckboxTxtRec.width, backgroundCheckboxTxtRec.height}, NULL, &fxBackgroundEnabled_);
     DrawText(TextFormat("Background music: %s", (fxBackgroundEnabled_) ? "ON" : "OFF"), volumeLabelRec_.x, anchorY, btnFont, BLACK);
 
+    anchorY += 50.0f;
+
     // Draw the exit button
-    DrawRectangle(exitBtnRec_.x, exitBtnRec_.y, exitBtnRec_.width, exitBtnRec_.height,
+    DrawRectangle(exitBtnRec_.x, anchorY, exitBtnRec_.width, exitBtnRec_.height,
                   btnColours_[static_cast<int>(exitBtnState_)]);
-    DrawText(exitBtnTxt.data(), exitBtnRec_.x + btnPadding, exitBtnRec_.y + btnPadding, btnFont,
+    DrawText(exitBtnTxt.data(), exitBtnRec_.x + btnPadding, anchorY + btnPadding, btnFont,
              WHITE);
 }
 
