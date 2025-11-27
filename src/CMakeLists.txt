@@ -11,12 +11,25 @@ if (NOT raylib_FOUND)
     FetchContent_MakeAvailable(raylib)
 endif()
 
+# raygui
+find_package(raygui CONFIG 4.0 QUIET)
+if (NOT raygui_FOUND)
+    message(STATUS "raygui could not be found or version is too old, downloading via FetchContent...")
+    set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+    set(BUILD_GAMES OFF CACHE BOOL "" FORCE)
+    FetchContent_Declare(
+      raygui
+      GIT_REPOSITORY https://github.com/raysan5/raygui
+      GIT_TAG        4.0)
+    FetchContent_MakeAvailable(raygui)
+endif()
+
 # slidr
 set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 FetchContent_Declare(
   slidr
   GIT_REPOSITORY https://github.com/neilchen1998/slidr
-  GIT_TAG        v2.1.3)
+  GIT_TAG        v2.2.0)
 FetchContent_MakeAvailable(slidr)
 
 file(GLOB GUI_HEADER_LIST CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/include/gui/*.hpp")
@@ -25,7 +38,7 @@ add_library(gui_library screenlib.cc animationlib.cc boardlib.cc celebration.cc 
 
 apply_compiler_flags(gui_library)
 
-target_include_directories(gui_library PUBLIC ../include)
+target_include_directories(gui_library PUBLIC ../include ${raygui_SOURCE_DIR}/src)
 
 target_link_libraries(gui_library PUBLIC raylib fmt::fmt Slidr::slidr)
 

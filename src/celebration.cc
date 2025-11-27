@@ -3,7 +3,7 @@
 #include <algorithm> // std::generate
 #include <array>     // std::array
 
-#include "slidr/math/mathlib.hpp" // GetNormalFloatDist, GetUniformIntDist, GetUniFloatDist
+#include "slidr/math/mathlib.hpp" // GetNormalFloatDist, GetUniformIntDist, GetUniformFloatDist
 
 namespace
 {
@@ -92,12 +92,12 @@ Celebration::Confetti Celebration::GenerateConfetti()
 {
     // Use designated initializer
     const float quarterScreen = 0.2 * GetScreenWidth();
-    return Confetti{.position = {GetUniFloatDist(0, GetScreenWidth()),
-                                 GetUniFloatDist(-quarterScreen, quarterScreen)},
+    return Confetti{.position = {GetUniformFloatDist(0, GetScreenWidth()),
+                                 GetUniformFloatDist(-quarterScreen, quarterScreen)},
                     .velocity = {GetNormalFloatDist(10, 50), GetNormalFloatDist(10, 50)},
-                    .size = GetUniFloatDist(5, 12),
-                    GetUniFloatDist(8, 20),
-                    .orientation = GetUniFloatDist(0, 360),
+                    .size = GetUniformFloatDist(5, 12),
+                    GetUniformFloatDist(8, 20),
+                    .orientation = GetUniformFloatDist(0, 360),
                     .omega = GetNormalFloatDist(10, 50),
                     .colour = CONFETTI_COLOURS[GetUniformIntDist(0, CONFETTI_COLOURS.size() - 1)],
                     .active = true};

@@ -3,7 +3,7 @@
 #include "fmt/core.h"
 #include "raylib.h"
 #define RAYGUI_IMPLEMENTATION
-#include "gui/raygui.h"
+#include "raygui.h"
 
 #include "gui/colourlib.hpp"
 #include "gui/settingslib.hpp"
