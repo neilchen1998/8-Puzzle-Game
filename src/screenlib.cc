@@ -49,6 +49,10 @@ ScreenManager::ScreenManager()
     newGameBox_ = {0.5f * screenWidth_ + buttonPadding, restartBox_.y, buttonWidth, buttonHeight};
 }
 
+ScreenManager::~ScreenManager()
+{
+}
+
 void ScreenManager::Update()
 {
     switch (curState_)

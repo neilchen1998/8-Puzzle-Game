@@ -174,6 +174,9 @@ private:
 
     /// @brief The sound effect for buttons
     Sound fxButton_;
+
+    /// @brief The background music
+    Music backgroundMusic;
 };
 
 #endif // INCLUDE_GUI_BOARDLIB_H_

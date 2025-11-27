@@ -28,7 +28,7 @@ class ScreenManager
 public:
     ScreenManager();
 
-    ~ScreenManager() = default;
+    ~ScreenManager();
 
     /// @brief Update the state
     void Update();

@@ -26,12 +26,6 @@ int main(void)
     // Set desired framerate (frames-per-second)
     SetTargetFPS(TARGET_FPS);
 
-    Music backgroundMusic = LoadMusicStream("resources/piano-background.mp3");
-
-    SetMusicVolume(backgroundMusic, 0.5f);
-
-    PlayMusicStream(backgroundMusic);
-
     while (!WindowShouldClose() &&
            !shouldClose) // Detect window close button, ESC key, or user's selection
     {
@@ -39,8 +33,6 @@ int main(void)
         manager.Update();
 
         shouldClose = manager.GetWindowShouldBeClosed();
-
-        UpdateMusicStream(backgroundMusic);
 
         // Draw
         BeginDrawing();
@@ -53,8 +45,6 @@ int main(void)
 
     // Unload all loaded data (textures, fonts, audio) here!
     manager.~ScreenManager();
-
-    UnloadMusicStream(backgroundMusic);
 
     // Close audio device
     CloseAudioDevice();
