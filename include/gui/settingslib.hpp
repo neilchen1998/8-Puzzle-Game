@@ -59,6 +59,7 @@ private:
     /// @brief The rectangle of the volume slider bar
     Rectangle volumeSliderBarRec_;
 
+    /// @brief The rectangle of the checkbox for the background music
     Rectangle backgroundCheckboxRec_;
 
     /// @brief The sound effect for moving

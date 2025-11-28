@@ -1,6 +1,5 @@
 #include <utility> // std::to_underlying
 
-#include "fmt/core.h"
 #include "raylib.h"
 #define RAYGUI_IMPLEMENTATION
 #include "raygui.h"
