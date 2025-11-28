@@ -59,6 +59,8 @@ private:
     /// @brief The rectangle of the volume slider bar
     Rectangle volumeSliderBarRec_;
 
+    Rectangle backgroundCheckboxRec_;
+
     /// @brief The sound effect for moving
     Sound fxMove_;
 

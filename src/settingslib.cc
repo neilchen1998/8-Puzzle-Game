@@ -35,6 +35,7 @@ Settings::Settings()
       volumeLabelRec_(
           {0.5f * (screenWidth_) - 150, 0.5f * screenHeight_ - 100, 60, 24}),
       volumeSliderBarRec_({volumeLabelRec_.x, 0.5f * screenHeight_ - 100 + 24, volumeSliderLen, 16}),
+      backgroundCheckboxRec_({0, 0, backgroundCheckboxTxtRec.width, backgroundCheckboxTxtRec.height}),
       fxBackgroundEnabled_(true)
 {
     // Load sound effects
@@ -44,6 +45,22 @@ Settings::Settings()
     // Measure the length of the texts
     backgroundMusicTxtLen_ = MeasureText(checkboxText, btnFont);
     mainVolumeTxtLen_ = MeasureText(sliderTxt, btnFont);
+
+    // Reassign the rectangles
+    float anchorY = volumeSliderBarRec_.y;
+
+    volumeSliderBarRec_.x = volumeLabelRec_.x + mainVolumeTxtLen_;
+    volumeSliderBarRec_.y = (anchorY + 0.75f * volumeSliderBarRec_.height);
+
+    anchorY += 50.0f;
+
+    backgroundCheckboxRec_.x = volumeLabelRec_.x + backgroundMusicTxtLen_ + 10;
+    backgroundCheckboxRec_.y = anchorY;
+
+    anchorY += 50.0f;
+
+    // Draw the exit button
+    exitBtnRec_.y = anchorY;
 }
 
 Settings::~Settings()
@@ -113,25 +130,19 @@ void Settings::Update()
 
 void Settings::Draw()
 {
-    float anchorY = volumeSliderBarRec_.y;
-
     // Draw the volume slider
-    GuiLabel({volumeLabelRec_.x + mainVolumeTxtLen_, (anchorY - volumeSliderBarRec_.height), volumeLabelRec_.width, volumeLabelRec_.height}, TextFormat("Volume: %i %", (int)volume_));
-    GuiSliderBar({volumeLabelRec_.x + mainVolumeTxtLen_, (anchorY + 0.75f * volumeSliderBarRec_.height), volumeSliderBarRec_.width, volumeSliderBarRec_.height}, NULL, NULL, &volume_, 0.0f, 100.0f);
-    DrawText("Main volume: ", volumeLabelRec_.x, anchorY, btnFont, BLACK);
-
-    anchorY += 50.0f;
+    GuiLabel({volumeLabelRec_.x + mainVolumeTxtLen_, (volumeLabelRec_.y - volumeSliderBarRec_.height), volumeLabelRec_.width, volumeLabelRec_.height}, TextFormat("Volume: %i %", (int)volume_));
+    GuiSliderBar(volumeSliderBarRec_, NULL, NULL, &volume_, 0.0f, 100.0f);
+    DrawText("Main volume: ", volumeLabelRec_.x, volumeSliderBarRec_.y, btnFont, BLACK);
 
     // Draw the checkbox and its text description
-    GuiCheckBox(Rectangle{volumeLabelRec_.x + backgroundMusicTxtLen_ + 10, anchorY, backgroundCheckboxTxtRec.width, backgroundCheckboxTxtRec.height}, NULL, &fxBackgroundEnabled_);
-    DrawText(TextFormat("Background music: %s", (fxBackgroundEnabled_) ? "ON" : "OFF"), volumeLabelRec_.x, anchorY, btnFont, BLACK);
-
-    anchorY += 50.0f;
+    GuiCheckBox(backgroundCheckboxRec_, NULL, &fxBackgroundEnabled_);
+    DrawText(TextFormat("Background music: %s", (fxBackgroundEnabled_) ? "ON" : "OFF"), volumeLabelRec_.x, backgroundCheckboxRec_.y, btnFont, BLACK);
 
     // Draw the exit button
-    DrawRectangle(exitBtnRec_.x, anchorY, exitBtnRec_.width, exitBtnRec_.height,
+    DrawRectangle(exitBtnRec_.x, exitBtnRec_.y, exitBtnRec_.width, exitBtnRec_.height,
                   btnColours_[static_cast<int>(exitBtnState_)]);
-    DrawText(exitBtnTxt.data(), exitBtnRec_.x + btnPadding, anchorY + btnPadding, btnFont,
+    DrawText(exitBtnTxt.data(), exitBtnRec_.x + btnPadding, exitBtnRec_.y + btnPadding, btnFont,
              WHITE);
 }
 
