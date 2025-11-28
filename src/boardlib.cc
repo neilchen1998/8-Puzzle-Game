@@ -172,7 +172,8 @@ void Board::Update()
     }
 
     // Check if the settings butoon is hovered or pressed
-    if (CheckCollisionPointRec(mousePos, buttonPositions_[std::to_underlying(gui::Button::Settings)]))
+    if (CheckCollisionPointRec(mousePos,
+                               buttonPositions_[std::to_underlying(gui::Button::Settings)]))
     {
         if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
         {
@@ -339,7 +340,6 @@ void Board::Draw() const
     else if (restartBtnState_ == gui::ButtonState::Hovered)
     {
         DrawRectangle(restartBtnX_, restartBtnY_, buttonWidth_, buttonHeight_, RED_WINE);
-
     }
     else
     {
@@ -362,18 +362,18 @@ void Board::Draw() const
     }
     DrawText(TextFormat("Help"), helpBtnX_ + 15, helpBtnY_ + 15, 40, WHITE);
 
-    Rectangle settingsBox{settingsBtnX_, settingsBtnY_, buttonWidth_, buttonHeight_};
+    // Settings button
     if (settingsBtnState_ == gui::ButtonState::Selected)
     {
-        DrawRectangle(settingsBox.x, settingsBox.y, settingsBox.width, settingsBox.height, DEEP_SKY_BLUE);
+        DrawRectangle(settingsBtnX_, settingsBtnY_, buttonWidth_, buttonHeight_, TEAL);
     }
     else if (settingsBtnState_ == gui::ButtonState::Hovered)
     {
-        DrawRectangle(settingsBox.x, settingsBox.y, settingsBox.width, settingsBox.height, STEEL_BLUE);
+        DrawRectangle(settingsBtnX_, settingsBtnY_, buttonWidth_, buttonHeight_, FOREST_GREEN);
     }
     else
     {
-        DrawRectangle(settingsBox.x, settingsBox.y, settingsBox.width, settingsBox.height, CAROLINE_BLUE);
+        DrawRectangle(settingsBtnX_, settingsBtnY_, buttonWidth_, buttonHeight_, JADE_GREEN);
     }
     DrawText(TextFormat("Settings"), settingsBtnX_ + 15, settingsBtnY_ + 15, 40, WHITE);
 
@@ -496,15 +496,9 @@ void Board::Restart()
     }
 }
 
-void Board::EnableBackgroundMusic() const
-{
-    SetMusicVolume(backgroundMusic_, 0.5f);
-}
+void Board::EnableBackgroundMusic() const { SetMusicVolume(backgroundMusic_, 0.5f); }
 
-void Board::DisableBackgroundMusic() const
-{
-    SetMusicVolume(backgroundMusic_, 0.0f);
-}
+void Board::DisableBackgroundMusic() const { SetMusicVolume(backgroundMusic_, 0.0f); }
 
 gui::Button Board::CheckWhichButtonIsPressed(const Vector2 &mousePos)
 {
