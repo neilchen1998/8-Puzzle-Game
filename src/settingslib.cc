@@ -17,7 +17,7 @@ constexpr float btnY = 350;
 constexpr float btnPadding = 10;
 constexpr float volumeSliderLen = 140;
 const std::string_view exitBtnTxt{"Back to MENU"};
-const Rectangle backgroundCheckboxTxtRec { 50, btnY, btnFont, btnFont };
+const Rectangle backgroundCheckboxTxtRec{50, btnY, btnFont, btnFont};
 const char *checkboxText = "Background music: OFF";
 const char *sliderTxt = "Main volume: ";
 } // namespace
@@ -32,10 +32,11 @@ Settings::Settings()
       exitBtnRec_(
           {0.5f * (screenWidth_ - exitBtnWidth_), 800, exitBtnWidth_ + 2 * btnPadding, btnHeight}),
       btnColours_({JADE_GREEN, DARK_GREEN, TEAL}),
-      volumeLabelRec_(
-          {0.5f * (screenWidth_) - 150, 0.5f * screenHeight_ - 100, 60, 24}),
-      volumeSliderBarRec_({volumeLabelRec_.x, 0.5f * screenHeight_ - 100 + 24, volumeSliderLen, 16}),
-      backgroundCheckboxRec_({0, 0, backgroundCheckboxTxtRec.width, backgroundCheckboxTxtRec.height}),
+      volumeLabelRec_({0.5f * (screenWidth_)-150, 0.5f * screenHeight_ - 100, 60, 24}),
+      volumeSliderBarRec_(
+          {volumeLabelRec_.x, 0.5f * screenHeight_ - 100 + 24, volumeSliderLen, 16}),
+      backgroundCheckboxRec_(
+          {0, 0, backgroundCheckboxTxtRec.width, backgroundCheckboxTxtRec.height}),
       fxBackgroundEnabled_(true)
 {
     // Load sound effects
@@ -131,13 +132,17 @@ void Settings::Update()
 void Settings::Draw()
 {
     // Draw the volume slider
-    GuiLabel({volumeLabelRec_.x + mainVolumeTxtLen_, (volumeLabelRec_.y - volumeSliderBarRec_.height), volumeLabelRec_.width, volumeLabelRec_.height}, TextFormat("Volume: %i %", (int)volume_));
+    GuiLabel({volumeLabelRec_.x + mainVolumeTxtLen_,
+              (volumeLabelRec_.y - volumeSliderBarRec_.height), volumeLabelRec_.width,
+              volumeLabelRec_.height},
+             TextFormat("Volume: %i %", (int)volume_));
     GuiSliderBar(volumeSliderBarRec_, NULL, NULL, &volume_, 0.0f, 100.0f);
     DrawText("Main volume: ", volumeLabelRec_.x, volumeSliderBarRec_.y, btnFont, BLACK);
 
     // Draw the checkbox and its text description
     GuiCheckBox(backgroundCheckboxRec_, NULL, &fxBackgroundEnabled_);
-    DrawText(TextFormat("Background music: %s", (fxBackgroundEnabled_) ? "ON" : "OFF"), volumeLabelRec_.x, backgroundCheckboxRec_.y, btnFont, BLACK);
+    DrawText(TextFormat("Background music: %s", (fxBackgroundEnabled_) ? "ON" : "OFF"),
+             volumeLabelRec_.x, backgroundCheckboxRec_.y, btnFont, BLACK);
 
     // Draw the exit button
     DrawRectangle(exitBtnRec_.x, exitBtnRec_.y, exitBtnRec_.width, exitBtnRec_.height,
@@ -152,7 +157,4 @@ bool Settings::Exit()
     return std::exchange(exit_, false);
 }
 
-bool Settings::GetBackgroundMusic() const
-{
-    return fxBackgroundEnabled_;
-}
+bool Settings::GetBackgroundMusic() const { return fxBackgroundEnabled_; }
