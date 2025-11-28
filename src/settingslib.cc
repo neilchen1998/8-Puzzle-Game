@@ -140,3 +140,8 @@ bool Settings::Exit()
     // Return the old value of exit_ and set it to false regardless
     return std::exchange(exit_, false);
 }
+
+bool Settings::GetBackgroundMusic() const
+{
+    return fxBackgroundEnabled_;
+}

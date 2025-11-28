@@ -28,7 +28,7 @@ class ScreenManager
 public:
     ScreenManager();
 
-    ~ScreenManager() = default;
+    ~ScreenManager();
 
     /// @brief Update the state
     void Update();
@@ -39,6 +39,10 @@ public:
     /// @brief Checks if the window should be closed
     /// @return TRUE if the window should be closed
     inline bool GetWindowShouldBeClosed() const { return close_; }
+
+private:
+    /// @brief Sets the background music based on user's choice
+    void SetBackgroundMusic();
 
 private:
     /// @brief The current state of the game

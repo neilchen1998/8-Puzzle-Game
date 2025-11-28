@@ -53,6 +53,12 @@ public:
     /// @brief Restarts the board
     void Restart();
 
+    /// @brief Enable the background music
+    void EnableBackgroundMusic() const;
+
+    /// @brief Disable the background music
+    void DisableBackgroundMusic() const;
+
 private:
     /// @brief Check which button is pressed
     /// @param mousePos The vector of the mouse cursor
@@ -174,6 +180,9 @@ private:
 
     /// @brief The sound effect for buttons
     Sound fxButton_;
+
+    /// @brief The background music
+    Music backgroundMusic_;
 };
 
 #endif // INCLUDE_GUI_BOARDLIB_H_

@@ -76,6 +76,11 @@ Board::Board()
     optimalMoves_ = (solutionDir_.size() - 1);
 
     fxButton_ = LoadSound("resources/buttonfx.wav");
+
+    // Initialize the background music
+    backgroundMusic_ = LoadMusicStream("resources/piano-background.mp3");
+    SetMusicVolume(backgroundMusic_, 0.5f);
+    PlayMusicStream(backgroundMusic_);
 }
 
 Board::~Board()
@@ -83,6 +88,7 @@ Board::~Board()
     // Unload resources to prevent memory leaks
     UnloadTexture(numbers_);
     UnloadSound(fxButton_);
+    UnloadMusicStream(backgroundMusic_);
 }
 
 void Board::Update()
@@ -266,6 +272,9 @@ void Board::Update()
         // Update the stats
         moves_ = (history_.size() - 1);
     }
+
+    // Update the background music
+    UpdateMusicStream(backgroundMusic_);
 }
 
 void Board::Draw() const
@@ -441,6 +450,16 @@ void Board::Restart()
     {
         history_.pop();
     }
+}
+
+void Board::EnableBackgroundMusic() const
+{
+    SetMusicVolume(backgroundMusic_, 0.5f);
+}
+
+void Board::DisableBackgroundMusic() const
+{
+    SetMusicVolume(backgroundMusic_, 0.0f);
 }
 
 gui::Button Board::CheckWhichButtonIsPressed(const Vector2 &mousePos)
