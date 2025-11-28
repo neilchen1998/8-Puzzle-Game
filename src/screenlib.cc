@@ -124,6 +124,10 @@ void ScreenManager::Update()
         {
             curState_ = GameScreenState::HELP;
         }
+        else if (boardPtr_->GoSettings())
+        {
+            curState_ = GameScreenState::SETTINGS;
+        }
         break;
     }
     case GameScreenState::HELP:

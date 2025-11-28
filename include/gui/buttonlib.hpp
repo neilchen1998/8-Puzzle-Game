@@ -27,6 +27,7 @@ enum class Button
     Restart,
     Undo,
     Help,
+    Settings,
 
     Invalid,
 

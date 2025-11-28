@@ -29,6 +29,8 @@ Board::Board()
       restartBtnY_(undoBtnY_ + buttonHeight_ + borderThickness_),
       helpBtnX_((screenHeight_ + boardHeight_) / 2 + borderThickness_),
       helpBtnY_(restartBtnY_ + buttonHeight_ + borderThickness_),
+      settingsBtnX_((screenHeight_ + boardHeight_) / 2 + borderThickness_),
+      settingsBtnY_(helpBtnY_ + buttonHeight_ + borderThickness_),
       N_(constants::EIGHT_PUZZLE_SIZE),
       cellWidth_(boardWidth__ / N_),
       cellHeight_(boardHeight_ / N_),
@@ -41,6 +43,7 @@ Board::Board()
       helpBtnState_(gui::ButtonState::Unselected),
       isSolved_(false),
       requestedHelp_(false),
+      goSettings_(false),
       moves_(INT_MAX)
 {
     buttonPositions_.resize(std::to_underlying(gui::Button::ButtonN));
@@ -59,6 +62,8 @@ Board::Board()
         Rectangle{restartBtnX_, restartBtnY_, buttonWidth_, buttonHeight_};
     buttonPositions_[std::to_underlying(gui::Button::Help)] =
         Rectangle{helpBtnX_, helpBtnY_, buttonWidth_, buttonHeight_};
+    buttonPositions_[std::to_underlying(gui::Button::Settings)] =
+        Rectangle{settingsBtnX_, settingsBtnY_, buttonWidth_, buttonHeight_};
 
     std::vector<int> initalLayout = creator::GetRandomLayout();
     std::shared_ptr<Node> startNode = std::make_shared<Node>(initalLayout);
@@ -99,6 +104,7 @@ void Board::Update()
     restartBtnAction_ = false;
     undoBtnAction_ = false;
     helpBtnAction_ = false;
+    settingsBtnAction_ = false;
 
     // Check if the restart button is hovered or pressed
     if (CheckCollisionPointRec(mousePos,
@@ -163,6 +169,27 @@ void Board::Update()
     else
     {
         helpBtnState_ = gui::ButtonState::Unselected;
+    }
+
+    // Check if the settings butoon is hovered or pressed
+    if (CheckCollisionPointRec(mousePos, buttonPositions_[std::to_underlying(gui::Button::Settings)]))
+    {
+        if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
+        {
+            settingsBtnState_ = gui::ButtonState::Selected;
+        }
+        else if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT))
+        {
+            settingsBtnAction_ = true;
+        }
+        else
+        {
+            settingsBtnState_ = gui::ButtonState::Hovered;
+        }
+    }
+    else
+    {
+        settingsBtnState_ = gui::ButtonState::Unselected;
     }
 
     // Check if the button is clicked
@@ -264,6 +291,14 @@ void Board::Update()
         PlaySound(fxButton_);
     }
 
+    // Check if the settings button needs to take action
+    if (settingsBtnAction_)
+    {
+        goSettings_ = true;
+
+        PlaySound(fxButton_);
+    }
+
     // Check if the puzzle is completed
     if (history_.top()->IsSolved())
     {
@@ -320,18 +355,31 @@ void Board::Draw() const
     if (helpBtnState_ == gui::ButtonState::Selected)
     {
         DrawRectangle(helpBox.x, helpBox.y, helpBox.width, helpBox.height, DEEP_SKY_BLUE);
-        DrawText(TextFormat("Help"), helpBtnX_ + 15, helpBtnY_ + 15, 40, WHITE);
     }
     else if (helpBtnState_ == gui::ButtonState::Hovered)
     {
         DrawRectangle(helpBox.x, helpBox.y, helpBox.width, helpBox.height, STEEL_BLUE);
-        DrawText(TextFormat("Help"), helpBtnX_ + 15, helpBtnY_ + 15, 40, WHITE);
     }
     else
     {
         DrawRectangle(helpBox.x, helpBox.y, helpBox.width, helpBox.height, CAROLINE_BLUE);
-        DrawText(TextFormat("Help"), helpBtnX_ + 15, helpBtnY_ + 15, 40, WHITE);
     }
+    DrawText(TextFormat("Help"), helpBtnX_ + 15, helpBtnY_ + 15, 40, WHITE);
+
+    Rectangle settingsBox{settingsBtnX_, settingsBtnY_, buttonWidth_, buttonHeight_};
+    if (settingsBtnState_ == gui::ButtonState::Selected)
+    {
+        DrawRectangle(settingsBox.x, settingsBox.y, settingsBox.width, settingsBox.height, DEEP_SKY_BLUE);
+    }
+    else if (settingsBtnState_ == gui::ButtonState::Hovered)
+    {
+        DrawRectangle(settingsBox.x, settingsBox.y, settingsBox.width, settingsBox.height, STEEL_BLUE);
+    }
+    else
+    {
+        DrawRectangle(settingsBox.x, settingsBox.y, settingsBox.width, settingsBox.height, CAROLINE_BLUE);
+    }
+    DrawText(TextFormat("Settings"), settingsBtnX_ + 15, settingsBtnY_ + 15, 40, WHITE);
 
     // Draw the number of steps (depth) on the top
     const int depth = history_.top()->GetDepth();

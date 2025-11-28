@@ -41,11 +41,15 @@ public:
 
     /// @brief Checks if the game is finished
     /// @return True if the game is finished
-    inline bool IsFinished() noexcept { return isSolved_; }
+    inline bool IsFinished() noexcept { return std::exchange(isSolved_, false); }
 
-    /// @brief Checks if the game is finished
-    /// @return True if the game is finished
-    inline bool RequestedHelp() noexcept { return requestedHelp_; }
+    /// @brief Checks if the user requests for help
+    /// @return True if the user requests for help
+    inline bool RequestedHelp() noexcept { return std::exchange(requestedHelp_, false); }
+
+    /// @brief Checks if the user wants to go to settings page
+    /// @return True if the user wants to go to settings page
+    inline bool GoSettings() noexcept { return std::exchange(goSettings_, false); }
 
     /// @brief Resets the board
     void Reset();
@@ -117,6 +121,12 @@ private:
     /// @brief the y position of the help button
     float helpBtnY_;
 
+    /// @brief the x position of the settings button
+    float settingsBtnX_;
+
+    /// @brief the y position of the settings button
+    float settingsBtnY_;
+
     /// @brief the number of grids in the board
     int N_;
 
@@ -151,6 +161,9 @@ private:
     /// @brief The state of help button
     gui::ButtonState helpBtnState_;
 
+    /// @brief The state of settings button
+    gui::ButtonState settingsBtnState_;
+
     /// @brief The action of the restart button
     bool restartBtnAction_;
 
@@ -160,11 +173,17 @@ private:
     /// @brief The action of the help button
     bool helpBtnAction_;
 
+    /// @brief The action of the settings button
+    bool settingsBtnAction_;
+
     /// @brief True if the puzzle is solved
     bool isSolved_;
 
     /// @brief True if the user requests for help
     bool requestedHelp_;
+
+    /// @brief True if the user wants to go to settings page
+    bool goSettings_;
 
     /// @brief The iterator that points to the solution
     std::vector<short>::const_iterator itr_;
