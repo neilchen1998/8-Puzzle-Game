@@ -316,53 +316,49 @@ void Board::Draw() const
 {
     DrawBoard();
 
-    // Draw text on the buttons
-    Rectangle undoBox{undoBtnX_, undoBtnY_, buttonWidth_, buttonHeight_};
+    // Undo button
     if (undoBtnState_ == gui::ButtonState::Selected)
     {
-        DrawRectangle(undoBox.x, undoBox.y, undoBox.width, undoBox.height, TANGERINE);
-        DrawText(TextFormat("Undo"), undoBtnX_ + 15, undoBtnY_ + 15, 40, WHITE);
+        DrawRectangle(undoBtnX_, undoBtnY_, buttonWidth_, buttonHeight_, TANGERINE);
     }
     else if (undoBtnState_ == gui::ButtonState::Hovered)
     {
-        DrawRectangle(undoBox.x, undoBox.y, undoBox.width, undoBox.height, TIGER);
-        DrawText(TextFormat("Undo"), undoBtnX_ + 15, undoBtnY_ + 15, 40, WHITE);
+        DrawRectangle(undoBtnX_, undoBtnY_, buttonWidth_, buttonHeight_, TIGER);
     }
     else
     {
-        DrawRectangle(undoBox.x, undoBox.y, undoBox.width, undoBox.height, APRICOT);
-        DrawText(TextFormat("Undo"), undoBtnX_ + 15, undoBtnY_ + 15, 40, WHITE);
+        DrawRectangle(undoBtnX_, undoBtnY_, buttonWidth_, buttonHeight_, APRICOT);
     }
+    DrawText(TextFormat("Undo"), undoBtnX_ + 15, undoBtnY_ + 15, 40, WHITE);
 
-    Rectangle restartBox{restartBtnX_, restartBtnY_, buttonWidth_, buttonHeight_};
+    // Restart button
     if (restartBtnState_ == gui::ButtonState::Selected)
     {
-        DrawRectangle(restartBox.x, restartBox.y, restartBox.width, restartBox.height, CRIMSON);
-        DrawText(TextFormat("Restart"), restartBtnX_ + 15, restartBtnY_ + 15, 40, WHITE);
+        DrawRectangle(restartBtnX_, restartBtnY_, buttonWidth_, buttonHeight_, CRIMSON);
     }
     else if (restartBtnState_ == gui::ButtonState::Hovered)
     {
-        DrawRectangle(restartBox.x, restartBox.y, restartBox.width, restartBox.height, FIREBRICK);
-        DrawText(TextFormat("Restart"), restartBtnX_ + 15, restartBtnY_ + 15, 40, WHITE);
+        DrawRectangle(restartBtnX_, restartBtnY_, buttonWidth_, buttonHeight_, RED_WINE);
+
     }
     else
     {
-        DrawRectangle(restartBox.x, restartBox.y, restartBox.width, restartBox.height, MAROON);
-        DrawText(TextFormat("Restart"), restartBtnX_ + 15, restartBtnY_ + 15, 40, WHITE);
+        DrawRectangle(restartBtnX_, restartBtnY_, buttonWidth_, buttonHeight_, MAROON);
     }
+    DrawText(TextFormat("Restart"), restartBtnX_ + 15, restartBtnY_ + 15, 40, WHITE);
 
-    Rectangle helpBox{helpBtnX_, helpBtnY_, buttonWidth_, buttonHeight_};
+    // Help button
     if (helpBtnState_ == gui::ButtonState::Selected)
     {
-        DrawRectangle(helpBox.x, helpBox.y, helpBox.width, helpBox.height, DEEP_SKY_BLUE);
+        DrawRectangle(helpBtnX_, helpBtnY_, buttonWidth_, buttonHeight_, DEEP_SKY_BLUE);
     }
     else if (helpBtnState_ == gui::ButtonState::Hovered)
     {
-        DrawRectangle(helpBox.x, helpBox.y, helpBox.width, helpBox.height, STEEL_BLUE);
+        DrawRectangle(helpBtnX_, helpBtnY_, buttonWidth_, buttonHeight_, STEEL_BLUE);
     }
     else
     {
-        DrawRectangle(helpBox.x, helpBox.y, helpBox.width, helpBox.height, CAROLINE_BLUE);
+        DrawRectangle(helpBtnX_, helpBtnY_, buttonWidth_, buttonHeight_, CAROLINE_BLUE);
     }
     DrawText(TextFormat("Help"), helpBtnX_ + 15, helpBtnY_ + 15, 40, WHITE);
 
