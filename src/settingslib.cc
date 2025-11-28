@@ -1,4 +1,5 @@
 #include <utility> // std::to_underlying
+#include <string_view>  // std::string_view
 
 #include "raylib.h"
 #define RAYGUI_IMPLEMENTATION
