@@ -24,6 +24,7 @@ constexpr std::string_view endingInstrTxt{"Select RESTART or NEW GAME"};
 constexpr std::string_view sadInstrTxt{"Press ENTER to skip"};
 constexpr std::string_view restartTxt{"RESTART"};
 constexpr std::string_view newGameTxt{"NEW GAME"};
+constexpr std::string_view resumeGameTxt{"RESUME GAME"};
 } // namespace
 
 ScreenManager::ScreenManager()

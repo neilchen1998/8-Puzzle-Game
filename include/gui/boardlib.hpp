@@ -79,77 +79,79 @@ private:
     /// @brief The height of the main screen
     int screenHeight_;
 
-    /// @brief the texture of the board pieces
+    /// @brief The texture of the board pieces
     Texture2D numbers_;
 
-    /// @brief the width of the board
+    /// @brief The width of the board
     int boardWidth__;
 
-    /// @brief the height of the board
+    /// @brief The height of the board
     int boardHeight_;
 
-    /// @brief the thickness of the boarder of the board
+    /// @brief The thickness of the boarder of the board
     int borderThickness_;
 
-    /// @brief the x position of the board
+    /// @brief The x position of the board
     float boxX_;
 
-    /// @brief the y position of the board
+    /// @brief The y position of the board
     float boxY_;
 
-    /// @brief the width of the board“
+    /// @brief The width of the board“
     float buttonWidth_;
 
-    /// @brief the height of the board
+    /// @brief The height of the board
     float buttonHeight_;
 
-    /// @brief the x position of the undo button
+    /// @brief The x position of the undo button
     float undoBtnX_;
 
-    /// @brief the y position of the undo button
+    /// @brief The y position of the undo button
     float undoBtnY_;
 
-    /// @brief the x position of the restart button
+    /// @brief The x position of the restart button
     float restartBtnX_;
 
-    /// @brief the y position of the restart button
+    /// @brief The y position of the restart button
     float restartBtnY_;
 
-    /// @brief the x position of the help button
+    /// @brief The x position of the help button
     float helpBtnX_;
 
-    /// @brief the y position of the help button
+    /// @brief The y position of the help button
     float helpBtnY_;
 
-    /// @brief the x position of the settings button
+    /// @brief The x position of the settings button
     float settingsBtnX_;
 
-    /// @brief the y position of the settings button
+    /// @brief The y position of the settings button
     float settingsBtnY_;
 
-    /// @brief the number of grids in the board
+    /// @brief The number of grids in the board
     int N_;
 
-    /// @brief the width of each grid in the board
+    /// @brief The width of each grid in the board
     float cellWidth_;
 
-    /// @brief the height of each grid in the board
+    /// @brief The height of each grid in the board
     float cellHeight_;
 
-    /// @brief the width
-    float w;
+    /// @brief The width of a piece of the puzzle
+    float w_;
 
-    /// @brief the height
-    float h;
+    /// @brief The height of a piece of the puzzle
+    float h_;
 
-    /// @brief the width offset for the puzzle piece image
+    /// @brief The width offset for the puzzle piece image
     float offsetW_;
 
-    /// @brief the height offset for the puzzle piece image
+    /// @brief The height offset for the puzzle piece image
     float offsetH_;
 
-    std::vector<Rectangle> buttonPositions_;
+    /// @brief The positions of the puzzles
+    std::vector<Rectangle> puzzlePositions;
 
+    /// @brief The history of the board
     std::stack<std::shared_ptr<Node>> history_;
 
     /// @brief The state of restart button

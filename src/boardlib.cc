@@ -34,8 +34,8 @@ Board::Board()
       N_(constants::EIGHT_PUZZLE_SIZE),
       cellWidth_(boardWidth__ / N_),
       cellHeight_(boardHeight_ / N_),
-      w(numbers_.width / 5.0f),
-      h(numbers_.height / 2.0f),
+      w_(numbers_.width / 5.0f),
+      h_(numbers_.height / 2.0f),
       offsetW_(cellWidth_ / 5),
       offsetH_(cellHeight_ / 8),
       restartBtnState_(gui::ButtonState::Unselected),
@@ -46,23 +46,23 @@ Board::Board()
       goSettings_(false),
       moves_(INT_MAX)
 {
-    buttonPositions_.resize(std::to_underlying(gui::Button::ButtonN));
+    puzzlePositions.resize(std::to_underlying(gui::Button::ButtonN));
 
     // Calculate the position of each piece of the puzzle
     for (size_t i = 0; i < constants::EIGHT_PUZZLE_NUM; i++)
     {
         float posX = boxX_ + ((i % 3) * cellWidth_);
         float posY = boxY_ + ((i / 3) * cellHeight_);
-        buttonPositions_[i] = Rectangle{posX, posY, cellWidth_, cellHeight_};
+        puzzlePositions[i] = Rectangle{posX, posY, cellWidth_, cellHeight_};
     }
 
-    buttonPositions_[std::to_underlying(gui::Button::Undo)] =
+    puzzlePositions[std::to_underlying(gui::Button::Undo)] =
         Rectangle{undoBtnX_, undoBtnY_, buttonWidth_, buttonHeight_};
-    buttonPositions_[std::to_underlying(gui::Button::Restart)] =
+    puzzlePositions[std::to_underlying(gui::Button::Restart)] =
         Rectangle{restartBtnX_, restartBtnY_, buttonWidth_, buttonHeight_};
-    buttonPositions_[std::to_underlying(gui::Button::Help)] =
+    puzzlePositions[std::to_underlying(gui::Button::Help)] =
         Rectangle{helpBtnX_, helpBtnY_, buttonWidth_, buttonHeight_};
-    buttonPositions_[std::to_underlying(gui::Button::Settings)] =
+    puzzlePositions[std::to_underlying(gui::Button::Settings)] =
         Rectangle{settingsBtnX_, settingsBtnY_, buttonWidth_, buttonHeight_};
 
     std::vector<int> initalLayout = creator::GetRandomLayout();
@@ -108,7 +108,7 @@ void Board::Update()
 
     // Check if the restart button is hovered or pressed
     if (CheckCollisionPointRec(mousePos,
-                               buttonPositions_[std::to_underlying(gui::Button::Restart)]))
+                               puzzlePositions[std::to_underlying(gui::Button::Restart)]))
     {
         if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
         {
@@ -130,7 +130,7 @@ void Board::Update()
     }
 
     // Check if the undo button is hovered or pressed
-    if (CheckCollisionPointRec(mousePos, buttonPositions_[std::to_underlying(gui::Button::Undo)]))
+    if (CheckCollisionPointRec(mousePos, puzzlePositions[std::to_underlying(gui::Button::Undo)]))
     {
         if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
         {
@@ -151,7 +151,7 @@ void Board::Update()
     }
 
     // Check if the help butoon is hovered or pressed
-    if (CheckCollisionPointRec(mousePos, buttonPositions_[std::to_underlying(gui::Button::Help)]))
+    if (CheckCollisionPointRec(mousePos, puzzlePositions[std::to_underlying(gui::Button::Help)]))
     {
         if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
         {
@@ -173,7 +173,7 @@ void Board::Update()
 
     // Check if the settings butoon is hovered or pressed
     if (CheckCollisionPointRec(mousePos,
-                               buttonPositions_[std::to_underlying(gui::Button::Settings)]))
+                               puzzlePositions[std::to_underlying(gui::Button::Settings)]))
     {
         if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
         {
@@ -505,7 +505,7 @@ gui::Button Board::CheckWhichButtonIsPressed(const Vector2 &mousePos)
     // Loop through all pieces on the board
     for (size_t i = 0; i <= std::to_underlying(gui::Button::NinthPiece); i++)
     {
-        if (CheckCollisionPointRec(mousePos, buttonPositions_[i]))
+        if (CheckCollisionPointRec(mousePos, puzzlePositions[i]))
         {
             return (gui::Button)i;
         }
@@ -548,7 +548,7 @@ void Board::DrawBoard() const
             // (sprite sheet technique)
             int recX = (num - 1) % 5;
             int recY = (num - 1) / 5;
-            Rectangle sourceRec = {recX * w, recY * h, w, h};
+            Rectangle sourceRec = {recX * w_, recY * h_, w_, h_};
 
             // Calculate the position of the texture
             float posX = boxX_ + ((i % 3) * cellWidth_) + offsetW_;
