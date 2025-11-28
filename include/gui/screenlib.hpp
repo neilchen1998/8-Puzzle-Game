@@ -41,6 +41,10 @@ public:
     inline bool GetWindowShouldBeClosed() const { return close_; }
 
 private:
+    /// @brief Sets the background music based on user's choice
+    void SetBackgroundMusic();
+
+private:
     /// @brief The current state of the game
     GameScreenState curState_;
 

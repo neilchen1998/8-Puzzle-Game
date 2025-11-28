@@ -113,6 +113,7 @@ void ScreenManager::Update()
     }
     case GameScreenState::GAMEPLAY:
     {
+        SetBackgroundMusic();
         boardPtr_->Update();
 
         if (boardPtr_->IsFinished())
@@ -362,5 +363,18 @@ void ScreenManager::Draw() const
     {
         break;
     }
+    }
+}
+
+void ScreenManager::SetBackgroundMusic()
+{
+    bool enabled = settingsPtr_->GetBackgroundMusic();
+    if (enabled)
+    {
+        boardPtr_->EnableBackgroundMusic();
+    }
+    else
+    {
+        boardPtr_->DisableBackgroundMusic();
     }
 }

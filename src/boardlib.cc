@@ -78,9 +78,9 @@ Board::Board()
     fxButton_ = LoadSound("resources/buttonfx.wav");
 
     // Initialize the background music
-    backgroundMusic = LoadMusicStream("resources/piano-background.mp3");
-    SetMusicVolume(backgroundMusic, 0.5f);
-    PlayMusicStream(backgroundMusic);
+    backgroundMusic_ = LoadMusicStream("resources/piano-background.mp3");
+    SetMusicVolume(backgroundMusic_, 0.5f);
+    PlayMusicStream(backgroundMusic_);
 }
 
 Board::~Board()
@@ -88,7 +88,7 @@ Board::~Board()
     // Unload resources to prevent memory leaks
     UnloadTexture(numbers_);
     UnloadSound(fxButton_);
-    UnloadMusicStream(backgroundMusic);
+    UnloadMusicStream(backgroundMusic_);
 }
 
 void Board::Update()
@@ -274,7 +274,7 @@ void Board::Update()
     }
 
     // Update the background music
-    UpdateMusicStream(backgroundMusic);
+    UpdateMusicStream(backgroundMusic_);
 }
 
 void Board::Draw() const
@@ -450,6 +450,16 @@ void Board::Restart()
     {
         history_.pop();
     }
+}
+
+void Board::EnableBackgroundMusic() const
+{
+    SetMusicVolume(backgroundMusic_, 0.5f);
+}
+
+void Board::DisableBackgroundMusic() const
+{
+    SetMusicVolume(backgroundMusic_, 0.0f);
 }
 
 gui::Button Board::CheckWhichButtonIsPressed(const Vector2 &mousePos)

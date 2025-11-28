@@ -24,6 +24,10 @@ public:
     /// @return TRUE if the user wants to exit settings page
     bool Exit();
 
+    /// @brief Checks if the user wants the background music
+    /// @return TRUE is the background music is enabled
+    bool GetBackgroundMusic() const;
+
 private:
     /// @brief The width of the main screen
     int screenWidth_;
