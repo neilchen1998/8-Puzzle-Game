@@ -101,26 +101,40 @@ void Settings::Update()
 
     if (exitBtnState_ != prevState)
     {
-        if (fxBackgroundEnabled_)
+        if (IsSoundPlaying(fxSelect_))
         {
-            PlaySound(fxSelect_);
+            StopSound(fxSelect_);
         }
+        PlaySound(fxMove_);
         prevState = exitBtnState_;
     }
 
-    if (fxBackgroundEnabled_ && CheckCollisionPointRec(mousePos, volumeSliderBarRec_) &&
-        (IsMouseButtonDown(MOUSE_BUTTON_LEFT) || IsMouseButtonReleased(MOUSE_BUTTON_LEFT)))
+    if (CheckCollisionPointRec(mousePos, volumeSliderBarRec_) && IsMouseButtonDown(MOUSE_BUTTON_LEFT))
     {
-        PlaySound(fxMove_);
+        if (IsSoundPlaying(fxSelect_))
+        {
+            StopSound(fxSelect_);
+        }
+        PlaySound(fxSelect_);
+    }
+
+    if (CheckCollisionPointRec(mousePos, backgroundCheckboxRec_) && IsMouseButtonDown(MOUSE_BUTTON_LEFT))
+    {
+        if (IsSoundPlaying(fxSelect_))
+        {
+            StopSound(fxSelect_);
+        }
+        PlaySound(fxSelect_);
     }
 
     // Check if action is valid
     if (exitAct)
     {
-        if (fxBackgroundEnabled_)
+        if (IsSoundPlaying(fxMove_))
         {
-            PlaySound(fxSelect_);
+            StopSound(fxMove_);
         }
+        PlaySound(fxSelect_);
         exit_ = true;
         exitAct = false;
     }
