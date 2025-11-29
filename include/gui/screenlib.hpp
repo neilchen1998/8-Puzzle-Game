@@ -44,6 +44,9 @@ private:
     /// @brief Sets the background music based on user's choice
     void SetBackgroundMusic();
 
+    /// @brief Set the music volume in game
+    void SetMusicVolume();
+
 private:
     /// @brief The current state of the game
     GameScreenState curState_;

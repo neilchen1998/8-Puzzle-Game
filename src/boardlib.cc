@@ -44,7 +44,8 @@ Board::Board()
       isSolved_(false),
       requestedHelp_(false),
       goSettings_(false),
-      moves_(INT_MAX)
+      moves_(INT_MAX),
+      volume_(0.25f)
 {
     puzzlePositions.resize(std::to_underlying(gui::Button::ButtonN));
 
@@ -84,7 +85,7 @@ Board::Board()
 
     // Initialize the background music
     backgroundMusic_ = LoadMusicStream("resources/piano-background.mp3");
-    SetMusicVolume(backgroundMusic_, 0.5f);
+    SetMusicVolume(backgroundMusic_, volume_);
     PlayMusicStream(backgroundMusic_);
 }
 
@@ -495,7 +496,7 @@ void Board::Restart()
     }
 }
 
-void Board::EnableBackgroundMusic() const { SetMusicVolume(backgroundMusic_, 0.5f); }
+void Board::EnableBackgroundMusic() const { SetMusicVolume(backgroundMusic_, volume_); }
 
 void Board::DisableBackgroundMusic() const { SetMusicVolume(backgroundMusic_, 0.0f); }
 
@@ -558,4 +559,9 @@ void Board::DrawBoard() const
             DrawTextureRec(numbers_, sourceRec, position, WHITE);
         }
     }
+}
+
+void Board::SetMasterVolume(float volume)
+{
+    volume_ = volume;
 }

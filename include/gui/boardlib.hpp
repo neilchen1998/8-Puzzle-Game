@@ -63,6 +63,10 @@ public:
     /// @brief Disable the background music
     void DisableBackgroundMusic() const;
 
+    /// @brief Set the volume of the game
+    /// @param volume The volume in percentage
+    void SetMasterVolume(float volume);
+
 private:
     /// @brief Check which button is pressed
     /// @param mousePos The vector of the mouse cursor
@@ -204,6 +208,9 @@ private:
 
     /// @brief The background music
     Music backgroundMusic_;
+
+    /// @brief The volume in percentage
+    float volume_;
 };
 
 #endif // INCLUDE_GUI_BOARDLIB_H_

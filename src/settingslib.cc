@@ -172,3 +172,5 @@ bool Settings::Exit()
 }
 
 bool Settings::GetBackgroundMusic() const { return fxBackgroundEnabled_; }
+
+float Settings::GetMasterVolume() const { return volume_; }

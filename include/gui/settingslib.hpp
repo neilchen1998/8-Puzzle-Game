@@ -28,6 +28,10 @@ public:
     /// @return TRUE is the background music is enabled
     bool GetBackgroundMusic() const;
 
+    /// @brief Gets the master volume set by the user
+    /// @return The master volume in percentage
+    float GetMasterVolume() const;
+
 private:
     /// @brief The width of the main screen
     int screenWidth_;
