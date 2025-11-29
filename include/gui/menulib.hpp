@@ -7,6 +7,16 @@
 
 #include "raylib.h"
 
+/// @brief The selction of the main menu
+enum struct MenuSelection : int
+{
+    NewGame,
+    Settings,
+    Exit,
+
+    Default = INT_MAX
+};
+
 class Menu
 {
     /// @brief the colours of the button {selected, unselected}
@@ -34,7 +44,7 @@ public:
 
     /// @brief Get the selection from the user
     /// @return The selection from the user, INT_MAX if the user has not pressed ENTER
-    int GetSelection();
+    MenuSelection GetSelection();
 
 private:
     /// @brief The width of the main screen

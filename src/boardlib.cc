@@ -107,8 +107,7 @@ void Board::Update()
     settingsBtnAction_ = false;
 
     // Check if the restart button is hovered or pressed
-    if (CheckCollisionPointRec(mousePos,
-                               puzzlePositions[std::to_underlying(gui::Button::Restart)]))
+    if (CheckCollisionPointRec(mousePos, puzzlePositions[std::to_underlying(gui::Button::Restart)]))
     {
         if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
         {

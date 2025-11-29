@@ -18,7 +18,7 @@ constexpr float btnPadding = 10;
 Menu::Menu()
     : screenWidth_(GetScreenWidth()),
       screenHeight_(GetScreenHeight()),
-      selectedOption_(0),
+      selectedOption_(INT_MAX),
       action_(false)
 {
     // Initialize the colours and the texts
@@ -116,9 +116,7 @@ void Menu::Update()
 
 void Menu::Draw() const
 {
-    const unsigned int N = btns_.size();
-
-    const float btnX = 0.5 * (screenWidth_ - btnWidth);
+    const size_t N = btns_.size();
     float btnY = 0.5 * (screenWidth_ - btnWidth);
 
     // Draw each option and its button
@@ -136,13 +134,13 @@ void Menu::Draw() const
     }
 }
 
-int Menu::GetSelection()
+MenuSelection Menu::GetSelection()
 {
     if (!action_)
     {
-        return INT_MAX;
+        return MenuSelection::Default;
     }
 
     action_ = false;
-    return selectedOption_;
+    return (MenuSelection)selectedOption_;
 }

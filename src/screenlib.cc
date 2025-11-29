@@ -50,9 +50,7 @@ ScreenManager::ScreenManager()
     newGameBox_ = {0.5f * screenWidth_ + buttonPadding, restartBox_.y, buttonWidth, buttonHeight};
 }
 
-ScreenManager::~ScreenManager()
-{
-}
+ScreenManager::~ScreenManager() {}
 
 void ScreenManager::Update()
 {
@@ -82,17 +80,17 @@ void ScreenManager::Update()
     {
         menuPtr_->Update();
 
-        int selection = menuPtr_->GetSelection();
+        MenuSelection selection = menuPtr_->GetSelection();
 
-        if (selection == 0)
+        if (selection == MenuSelection::NewGame)
         {
             curState_ = GameScreenState::GAMEPLAY;
         }
-        else if (selection == 1)
+        else if (selection == MenuSelection::Settings)
         {
             curState_ = GameScreenState::SETTINGS;
         }
-        else if (selection == 2)
+        else if (selection == MenuSelection::Exit)
         {
             close_ = true;
         }
